@@ -1,0 +1,3 @@
+controllers:
+    resource: '../src/WebApi/Http/Endpoints/'
+    type: attribute

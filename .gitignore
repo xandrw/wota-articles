@@ -10,5 +10,6 @@
 ###< symfony/framework-bundle ###
 
 .idea
+docs
 .env
-compose.override.yaml.yaml
+compose.override.yaml
