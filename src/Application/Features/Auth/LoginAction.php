@@ -6,7 +6,6 @@ use App\Application\Exceptions\UnauthorizedException;
 use App\Domain\Users\AccessToken;
 use App\Domain\Users\User;
 use Doctrine\ORM\EntityManagerInterface;
-use Random\RandomException;
 use SensitiveParameter;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
@@ -21,9 +20,6 @@ readonly class LoginAction
     {
     }
 
-    /**
-     * @throws RandomException
-     */
     public function __invoke(string $email, #[SensitiveParameter] string $password): AccessToken
     {
         $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $email]);

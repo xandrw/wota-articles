@@ -2,6 +2,7 @@
 
 namespace App\Domain\Users;
 
+use App\Domain\Contract;
 use App\Domain\EntityInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -58,7 +59,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, EntityI
 
     public function setEmail(string $email): self
     {
-        // todo: validate
+        $emailLength = strlen($email);
+        Contract::requires(empty($email) === false, 'error.email.required');
+        Contract::requires(filter_var($email, FILTER_VALIDATE_EMAIL) !== false, 'error.email.invalid');
+        Contract::requires($emailLength >= 6 && $emailLength <= 60, 'error.email.length');
+
         $this->email = $email;
         return $this;
     }
@@ -73,7 +78,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, EntityI
      */
     public function setPassword(#[SensitiveParameter] string $password, callable $passwordHasher): self
     {
-        // todo: validate
+        $passwordLength = strlen($password);
+        Contract::requires(empty($password) === false, 'error.password.required');
+        Contract::requires($passwordLength >= 8 && $passwordLength <= 255, 'error.password.length');
+
         $this->password = $passwordHasher($this, $password);
         return $this;
     }
@@ -81,7 +89,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, EntityI
     /**
      * @param callable(PasswordAuthenticatedUserInterface $user, string $password): bool $passwordValidator
      */
-    public function validatePassword(string $password, callable $passwordValidator): bool
+    public function validatePassword(#[SensitiveParameter] string $password, callable $passwordValidator): bool
     {
         return $passwordValidator($this, $password);
     }
@@ -93,6 +101,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, EntityI
 
     public function addRole(string $role): self
     {
+        Contract::requires(in_array($role, self::ROLES, true), 'error.role.invalid');
+
         if (in_array($role, $this->getRoles(), true)) {
             return $this;
         }

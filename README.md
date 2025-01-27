@@ -12,7 +12,9 @@ AI Driven Article Summaries
 - [x] Intercept Exceptions and return standard JSON response
 - [x] Integrate PHPStorm Xdebug
 - [ ] Logger (Monolog?)
+- [ ] Twig templates
 - [ ] Messenger and Worker functionality for background tasks
 - [ ] Unit Tests
+- [ ] Fixtures from yaml
 - [ ] Behat Endpoint Tests
 - [ ] Finish documenting `README.md`

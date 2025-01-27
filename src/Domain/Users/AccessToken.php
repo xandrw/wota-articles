@@ -2,12 +2,11 @@
 
 namespace App\Domain\Users;
 
+use App\Domain\Contract;
 use App\Domain\EntityInterface;
 use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use InvalidArgumentException;
-use Random\RandomException;
 
 #[ORM\Entity, ORM\Table(name: 'access_tokens')]
 class AccessToken implements EntityInterface
@@ -24,15 +23,9 @@ class AccessToken implements EntityInterface
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     private DateTimeImmutable $expiresAt;
 
-    /**
-     * @throws InvalidArgumentException
-     * @throws RandomException
-     */
     public function __construct(User $user, int $ttl)
     {
-        if ($user->getId() === null) {
-            throw new InvalidArgumentException('User must not be null');
-        }
+        Contract::requires($user->getId() !== null, 'error.userId.required');
 
         $this->user = $user;
         $this->token = bin2hex(random_bytes(32));
