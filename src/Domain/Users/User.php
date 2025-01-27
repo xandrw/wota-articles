@@ -12,9 +12,9 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[ORM\Entity, ORM\Table(name: 'users')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface, EntityInterface
 {
-    public const string ROLE_AUTHOR = 'ROLE_AUTHOR';
+    public const string ROLE_USER = 'ROLE_USER';
     public const string ROLE_ADMIN = 'ROLE_ADMIN';
-    public const array ROLES = [self::ROLE_AUTHOR, self::ROLE_ADMIN];
+    public const array ROLES = [self::ROLE_USER, self::ROLE_ADMIN];
 
     #[ORM\Id, ORM\Column(type: Types::INTEGER), ORM\GeneratedValue]
     private ?int $id = null;
@@ -22,12 +22,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, EntityI
     #[ORM\Column(type: Types::STRING, unique: true)]
     private string $email;
 
+    #[ORM\Column(type: Types::STRING)]
+    private string $password;
+
     /** @var string[] */
     #[ORM\Column(type: Types::JSON)]
     private array $roles = [];
-
-    #[ORM\Column(type: Types::STRING)]
-    private string $password;
 
     /**
      * @param callable(PasswordAuthenticatedUserInterface $user, string $password): string $passwordHasher
@@ -40,12 +40,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, EntityI
         callable $passwordHasher,
     )
     {
-        $this->setEmail($email)
+        $this
+            ->setEmail($email)
             ->setPassword($password, $passwordHasher)
             ->setRoles($roles);
     }
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -57,20 +58,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, EntityI
 
     public function setEmail(string $email): self
     {
+        // todo: validate
         $this->email = $email;
-        return $this;
-    }
-
-    public function getRoles(): array
-    {
-        $roles = $this->roles;
-        $roles[] = static::ROLE_AUTHOR;
-        return array_unique($roles);
-    }
-
-    public function setRoles(array $roles): self
-    {
-        $this->roles = $roles;
         return $this;
     }
 
@@ -84,7 +73,47 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, EntityI
      */
     public function setPassword(#[SensitiveParameter] string $password, callable $passwordHasher): self
     {
+        // todo: validate
         $this->password = $passwordHasher($this, $password);
+        return $this;
+    }
+
+    /**
+     * @param callable(PasswordAuthenticatedUserInterface $user, string $password): bool $passwordValidator
+     */
+    public function validatePassword(string $password, callable $passwordValidator): bool
+    {
+        return $passwordValidator($this, $password);
+    }
+
+    public function getRoles(): array
+    {
+        return $this->roles;
+    }
+
+    public function addRole(string $role): self
+    {
+        if (in_array($role, $this->getRoles(), true)) {
+            return $this;
+        }
+
+        $this->roles[] = $role;
+        return $this;
+    }
+
+    public function removeRole(string $role): self
+    {
+        if (in_array($role, $this->getRoles(), true) === false || $role === self::ROLE_USER) {
+            return $this;
+        }
+
+        $roleIndex = array_search($role, $this->getRoles(), true);
+
+        if ($roleIndex === false) {
+            return $this;
+        }
+
+        unset($this->roles[$roleIndex]);
         return $this;
     }
 
@@ -96,5 +125,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, EntityI
     public function eraseCredentials(): self
     {
         return $this;
+    }
+
+    private function setRoles(array $roles): void
+    {
+        if (empty($roles)) {
+            $this->roles = [self::ROLE_USER];
+            return;
+        }
+
+        foreach ($roles as $role) {
+            $this->addRole($role);
+        }
     }
 }

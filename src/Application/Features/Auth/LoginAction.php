@@ -6,6 +6,8 @@ use App\Application\Exceptions\UnauthorizedException;
 use App\Domain\Users\AccessToken;
 use App\Domain\Users\User;
 use Doctrine\ORM\EntityManagerInterface;
+use Random\RandomException;
+use SensitiveParameter;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 readonly class LoginAction
@@ -19,15 +21,22 @@ readonly class LoginAction
     {
     }
 
-    public function __invoke(string $email, string $password): AccessToken
+    /**
+     * @throws RandomException
+     */
+    public function __invoke(string $email, #[SensitiveParameter] string $password): AccessToken
     {
         $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $email]);
 
-        if ($user === null || $this->passwordHasher->isPasswordValid($user, $password) === false) {
+        if ($user === null) {
             throw new UnauthorizedException();
         }
 
-        // TODO: Could reimplement this as a event, in case of a password change endpoint
+        if ($user->validatePassword($password, $this->passwordHasher->isPasswordValid(...)) === false) {
+            throw new UnauthorizedException();
+        }
+
+        // todo: Could reimplement this as a event, in case of a password change endpoint
         $this->deleteTokensAction->__invoke($user);
 
         $accessToken = new AccessToken($user, $this->accessTokenExpiry);

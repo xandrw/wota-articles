@@ -26,15 +26,16 @@ readonly class ChangePasswordAction
     {
         $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $email]);
 
-        if ($user === null || $this->passwordHasher->isPasswordValid($user, $oldPassword) === false) {
+        if ($user === null) {
+            throw new UnauthorizedException();
+        }
+
+        if ($user->validatePassword($oldPassword, $this->passwordHasher->isPasswordValid(...)) === false) {
             throw new UnauthorizedException();
         }
 
         $this->deleteTokensAction->__invoke($user);
-        $user->setPassword(
-            $newPassword,
-            fn(User $user, string $password) => $this->passwordHasher->hashPassword($user, $password)
-        );
+        $user->setPassword($newPassword, $this->passwordHasher->hashPassword(...));
 
         $this->entityManager->persist($user);
         $this->entityManager->flush();

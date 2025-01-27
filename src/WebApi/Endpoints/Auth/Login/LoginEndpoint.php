@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\WebApi\Endpoints\Auth\Login;
 
 use App\Application\Features\Auth\LoginAction;
+use Random\RandomException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,6 +21,9 @@ class LoginEndpoint extends AbstractController
     {
     }
 
+    /**
+     * @throws RandomException
+     */
     public function __invoke(#[MapRequestPayload] LoginRequest $request): Response
     {
         $accessToken = $this->loginAction->__invoke($request->email, $request->password);

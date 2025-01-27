@@ -6,6 +6,8 @@ use App\Domain\EntityInterface;
 use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use InvalidArgumentException;
+use Random\RandomException;
 
 #[ORM\Entity, ORM\Table(name: 'access_tokens')]
 class AccessToken implements EntityInterface
@@ -22,11 +24,19 @@ class AccessToken implements EntityInterface
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     private DateTimeImmutable $expiresAt;
 
+    /**
+     * @throws InvalidArgumentException
+     * @throws RandomException
+     */
     public function __construct(User $user, int $ttl)
     {
-        $this->setUser($user);
-        $this->setToken(bin2hex(random_bytes(32)));
-        $this->setExpiresAt(new DateTimeImmutable("+$ttl seconds"));
+        if ($user->getId() === null) {
+            throw new InvalidArgumentException('User must not be null');
+        }
+
+        $this->user = $user;
+        $this->token = bin2hex(random_bytes(32));
+        $this->expiresAt = new DateTimeImmutable("+$ttl seconds");
     }
 
     public function getId(): ?int
@@ -39,32 +49,14 @@ class AccessToken implements EntityInterface
         return $this->user;
     }
 
-    public function setUser(User $user): self
-    {
-        $this->user = $user;
-        return $this;
-    }
-
     public function getToken(): string
     {
         return $this->token;
     }
 
-    public function setToken(string $token): self
-    {
-        $this->token = $token;
-        return $this;
-    }
-
     public function getExpiresAt(): DateTimeImmutable
     {
         return $this->expiresAt;
-    }
-
-    public function setExpiresAt(DateTimeImmutable $expiresAt): self
-    {
-        $this->expiresAt = $expiresAt;
-        return $this;
     }
 
     public function isExpired(): bool

@@ -23,12 +23,7 @@ readonly class CreateUserAction
      */
     public function __invoke(string $email, #[SensitiveParameter] string $password, array $roles): User
     {
-        $user = new User(
-            $email,
-            $password,
-            $roles,
-            fn(User $user, string $password) => $this->userPasswordHasher->hashPassword($user, $password),
-        );
+        $user = new User($email, $password, $roles, $this->userPasswordHasher->hashPassword(...));
 
         try {
             $this->entityManager->persist($user);
