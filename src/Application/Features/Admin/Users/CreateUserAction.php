@@ -27,7 +27,7 @@ readonly class CreateUserAction
             $email,
             $password,
             $roles,
-            fn($user, $password) => $this->userPasswordHasher->hashPassword($user, $password),
+            fn(User $user, string $password) => $this->userPasswordHasher->hashPassword($user, $password),
         );
 
         try {

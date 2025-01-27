@@ -31,7 +31,10 @@ readonly class ChangePasswordAction
         }
 
         $this->deleteTokensAction->__invoke($user);
-        $user->setPassword($this->passwordHasher->hashPassword($user, $newPassword));
+        $user->setPassword(
+            $newPassword,
+            fn(User $user, string $password) => $this->passwordHasher->hashPassword($user, $password)
+        );
 
         $this->entityManager->persist($user);
         $this->entityManager->flush();

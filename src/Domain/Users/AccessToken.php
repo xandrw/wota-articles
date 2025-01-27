@@ -7,17 +7,13 @@ use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity]
-#[ORM\Table(name: 'access_tokens')]
+#[ORM\Entity, ORM\Table(name: 'access_tokens')]
 class AccessToken implements EntityInterface
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Id, ORM\Column(type: Types::INTEGER), ORM\GeneratedValue]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(targetEntity: User::class)]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(targetEntity: User::class), ORM\JoinColumn(nullable: false)]
     private User $user;
 
     #[ORM\Column(type: Types::STRING, unique: true)]
@@ -36,12 +32,6 @@ class AccessToken implements EntityInterface
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function setId(?int $id): self
-    {
-        $this->id = $id;
-        return $this;
     }
 
     public function getUser(): User
