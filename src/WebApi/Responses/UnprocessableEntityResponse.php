@@ -11,10 +11,10 @@ class UnprocessableEntityResponse extends JsonResponse
     public function __construct(
         ConstraintViolationListInterface $violations,
         string $message = 'Validation failed',
-        array $headers = []
+        array $headers = [],
     )
     {
-        $data = ['message' => $message];
+        $data = ['message' => $message, 'errors' => []];
 
         if ($violations->count() > 0) {
             foreach ($violations as $violation) {
@@ -25,10 +25,6 @@ class UnprocessableEntityResponse extends JsonResponse
             }
         }
 
-        parent::__construct(
-            $data,
-            Response::HTTP_UNPROCESSABLE_ENTITY,
-            $headers
-        );
+        parent::__construct($data, Response::HTTP_UNPROCESSABLE_ENTITY, $headers);
     }
 }

@@ -26,12 +26,11 @@ class CreateUserEndpoint extends AbstractController
     }
 
     /**
-     * @throws Throwable Handled by one of the exception listeners
+     * @throws Throwable Handled by exception listener
      */
     public function __invoke(#[MapRequestPayload] CreateUserRequest $request): Response
     {
         $user = $this->createUserAction->__invoke($request->email, $request->password, $request->roles);
-
         return new JsonResponse(UserResponse::fromEntity($user), Response::HTTP_CREATED);
     }
 }

@@ -7,17 +7,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 class InternalServerErrorResponse extends JsonResponse
 {
-    public function __construct(
-        string $message = 'Internal Error',
-        array $headers = []
-    )
+    public function __construct(string $message = 'Internal Error', array $headers = [])
     {
-        $data = ['message' => $message];
-
-        parent::__construct(
-            $data,
-            Response::HTTP_INTERNAL_SERVER_ERROR,
-            $headers
-        );
+        parent::__construct(['message' => $message], Response::HTTP_INTERNAL_SERVER_ERROR, $headers);
     }
 }

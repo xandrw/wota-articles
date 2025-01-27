@@ -3,13 +3,14 @@
 namespace App\Application\Features\Auth;
 
 use App\Application\Exceptions\UnauthorizedException;
+use App\Application\Interfaces\InvokerInterface;
 use App\Domain\Users\AccessToken;
 use App\Domain\Users\User;
 use Doctrine\ORM\EntityManagerInterface;
 use SensitiveParameter;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-readonly class LoginAction
+readonly class LoginAction implements InvokerInterface
 {
     public function __construct(
         private EntityManagerInterface $entityManager,

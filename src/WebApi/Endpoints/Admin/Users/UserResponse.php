@@ -6,11 +6,7 @@ use App\Domain\Users\User;
 
 readonly class UserResponse
 {
-    public function __construct(
-        public int $id,
-        public string $email,
-        public array $roles,
-    )
+    public function __construct(public int $id, public string $email, public array $roles)
     {
     }
 
