@@ -4,7 +4,7 @@ security:
         Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
     # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
     providers:
-        users:
+        doctrineUsers:
             entity:
                 class: App\Domain\Users\User
                 property: email
@@ -13,18 +13,13 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-        api.admin:
-            lazy: true
-            pattern: ^/api/admin
-            stateless: true
-            provider: users
-            access_token:
-                token_handler: App\Infrastructure\Security\AccessTokenHandler
         api:
             lazy: true
             pattern: ^/api
             stateless: true
-            security: false
+            provider: doctrineUsers
+            access_token:
+                token_handler: App\Infrastructure\Security\AccessTokenHandler
             
             # https://symfony.com/doc/current/security/impersonating_user.html
             # switch_user: true

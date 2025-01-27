@@ -5,7 +5,7 @@ namespace App\Application\Exceptions;
 use RuntimeException;
 use Throwable;
 
-class InvalidCredentialsException extends RuntimeException implements ApplicationExceptionInterface
+class UnauthorizedException extends RuntimeException implements ApplicationExceptionInterface
 {
     public function __construct(int $code = 401, ?Throwable $previous = null)
     {

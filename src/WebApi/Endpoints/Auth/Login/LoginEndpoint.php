@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\WebApi\Endpoints\Auth;
+namespace App\WebApi\Endpoints\Auth\Login;
 
 use App\Application\Features\Auth\LoginAction;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

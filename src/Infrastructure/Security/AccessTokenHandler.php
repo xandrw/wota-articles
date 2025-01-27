@@ -21,6 +21,8 @@ readonly class AccessTokenHandler implements AccessTokenHandlerInterface
         $token = $this->entityManager->getRepository(AccessToken::class)->findOneBy(['token' => $accessToken]);
 
         if ($token === null || $token->isExpired()) {
+            // This exception is caught in Symfony AuthenticatorManager
+            // An empty 401 response is returned
             throw new AuthenticationException();
         }
 

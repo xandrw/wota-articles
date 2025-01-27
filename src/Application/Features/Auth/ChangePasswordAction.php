@@ -3,38 +3,37 @@
 namespace App\Application\Features\Auth;
 
 use App\Application\Exceptions\UnauthorizedException;
-use App\Domain\Users\AccessToken;
 use App\Domain\Users\User;
 use Doctrine\ORM\EntityManagerInterface;
+use SensitiveParameter;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-readonly class LoginAction
+readonly class ChangePasswordAction
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
         private UserPasswordHasherInterface $passwordHasher,
         private DeleteAccessTokensAction $deleteTokensAction,
-        private string $accessTokenExpiry,
     )
     {
     }
 
-    public function __invoke(string $email, string $password): AccessToken
+    public function __invoke(
+        string $email,
+        #[SensitiveParameter] string $oldPassword,
+        #[SensitiveParameter] string $newPassword,
+    ): void
     {
         $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $email]);
 
-        if ($user === null || $this->passwordHasher->isPasswordValid($user, $password) === false) {
+        if ($user === null || $this->passwordHasher->isPasswordValid($user, $oldPassword) === false) {
             throw new UnauthorizedException();
         }
 
-        // TODO: Could reimplement this as a event, in case of a password change endpoint
         $this->deleteTokensAction->__invoke($user);
+        $user->setPassword($this->passwordHasher->hashPassword($user, $newPassword));
 
-        $accessToken = new AccessToken($user, $this->accessTokenExpiry);
-
-        $this->entityManager->persist($accessToken);
+        $this->entityManager->persist($user);
         $this->entityManager->flush();
-
-        return $accessToken;
     }
 }

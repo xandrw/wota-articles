@@ -39,11 +39,7 @@ class HttpExceptionListener
         }
 
         if (empty($exception->getMessage())) {
-            $event->setResponse(new Response(
-                null,
-                $exception->getStatusCode(),
-                $exception->getHeaders(),
-            ));
+            $event->setResponse(new Response(null, $exception->getStatusCode(), $exception->getHeaders()));
             return;
         }
 

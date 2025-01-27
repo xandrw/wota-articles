@@ -1,6 +1,6 @@
 <?php
 
-namespace App\WebApi\Endpoints\Auth;
+namespace App\WebApi\Endpoints\Auth\Login;
 
 use SensitiveParameter;
 use Symfony\Component\Validator\Constraints as Assert;
