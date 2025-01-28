@@ -12,6 +12,7 @@ AI Driven Article Summaries
 - [x] Intercept Exceptions and return standard JSON response
 - [x] Integrate PHPStorm Xdebug
 - [x] Domain Events published automatically
+- [ ] Force json on REST API
 - [ ] Logger (Monolog?)
 - [ ] Twig templates
 - [ ] Messenger and Worker functionality for background tasks

@@ -5,6 +5,7 @@ namespace App\Domain\Entities\Users;
 use App\Domain\Entities\EntityInterface;
 use App\Domain\Entities\Users\Events\UserLoggedInEvent;
 use App\Domain\Events\EntityHasEventsTrait;
+use App\Domain\Interfaces\RandomInterface;
 use App\Domain\Validation\ValidationTrait;
 use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
@@ -28,12 +29,12 @@ class AccessToken implements EntityInterface
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     private DateTimeImmutable $expiresAt;
 
-    public function __construct(User $user, int $ttl)
+    public function __construct(User $user, int $ttl, RandomInterface $random)
     {
         self::requires($user->getId() !== null, 'error.userId.required');
 
         $this->user = $user;
-        $this->token = bin2hex(random_bytes(32));
+        $this->token = $random->generate();
         $this->expiresAt = new DateTimeImmutable("+$ttl seconds");
         $this->addEvent(new UserLoggedInEvent($user));
     }

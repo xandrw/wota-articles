@@ -10,7 +10,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /** @SuppressUnused */
 #[AsDoctrineListener(Events::onFlush)]
-readonly class EntityPublishedEventsListener
+readonly class DomainEventsListener
 {
     public function __construct(private EventDispatcherInterface $dispatcher)
     {
@@ -19,9 +19,7 @@ readonly class EntityPublishedEventsListener
     /** @SuppressUnused */
     public function onFlush(OnFlushEventArgs $arguments): void
     {
-        $objectManager = $arguments->getObjectManager();
-        $unitOfWork = $objectManager->getUnitOfWork();
-
+        $unitOfWork = $arguments->getObjectManager()->getUnitOfWork();
         $scheduledEntities = [
             ...$unitOfWork->getScheduledEntityInsertions(),
             ...$unitOfWork->getScheduledEntityUpdates(),
