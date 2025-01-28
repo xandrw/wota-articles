@@ -30,11 +30,11 @@ readonly class ChangePasswordAction implements InvokerInterface
             throw new UnauthorizedException();
         }
 
-        if ($user->validatePassword($oldPassword, $this->passwordHasher->isPasswordValid(...)) === false) {
+        if ($user->validatePassword($oldPassword, $this->passwordHasher) === false) {
             throw new UnauthorizedException();
         }
 
-        $user->setPassword($newPassword, $this->passwordHasher->hashPassword(...));
+        $user->setPassword($newPassword, $this->passwordHasher);
         $this->entityManager->persist($user);
         $this->entityManager->flush();
     }

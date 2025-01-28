@@ -28,7 +28,7 @@ readonly class LoginAction implements InvokerInterface
             throw new UnauthorizedException();
         }
 
-        if ($user->validatePassword($password, $this->passwordHasher->isPasswordValid(...)) === false) {
+        if ($user->validatePassword($password, $this->passwordHasher) === false) {
             throw new UnauthorizedException();
         }
 

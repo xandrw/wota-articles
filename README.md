@@ -19,4 +19,5 @@ AI Driven Article Summaries
 - [ ] Fixtures from yaml
 - [ ] Behat Endpoint Tests
 - [ ] Architecture Analysis Command - checks if the direction of the dependencies points inward
+- [ ] Create branch with fully decoupled Domain members
 - [ ] Finish documenting `README.md`

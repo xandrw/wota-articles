@@ -30,7 +30,7 @@ readonly class CreateUserAction implements InvokerInterface
             throw new DuplicateEntityException(User::class);
         }
 
-        $user = new User($email, $password, $roles, $this->userPasswordHasher->hashPassword(...));
+        $user = new User($email, $password, $roles, $this->userPasswordHasher);
         $this->entityManager->persist($user);
         $this->entityManager->flush();
 

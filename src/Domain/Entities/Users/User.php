@@ -9,6 +9,7 @@ use App\Domain\Validation\ValidationTrait;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use SensitiveParameter;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -35,15 +36,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, EntityI
     #[ORM\Column(type: Types::JSON)]
     private array $roles = [];
 
-    /**
-     * @param callable(PasswordAuthenticatedUserInterface $user, string $password): string $passwordHasher
-     */
     public function __construct(
         string $email,
         #[SensitiveParameter]
         string $password,
         array $roles,
-        callable $passwordHasher,
+        UserPasswordHasherInterface $passwordHasher,
     )
     {
         $this
@@ -78,26 +76,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, EntityI
         return $this->password;
     }
 
-    /**
-     * @param callable(PasswordAuthenticatedUserInterface $user, string $password): string $passwordHasher
-     */
-    public function setPassword(#[SensitiveParameter] string $password, callable $passwordHasher): self
+    public function setPassword(
+        #[SensitiveParameter] string $password,
+        UserPasswordHasherInterface $passwordHasher,
+    ): self
     {
         $passwordLength = strlen($password);
         self::requires(empty($password) === false, 'error.password.required');
         self::requires($passwordLength >= 8 && $passwordLength <= 255, 'error.password.length');
 
-        $this->password = $passwordHasher($this, $password);
+        $this->password = $passwordHasher->hashPassword($this, $password);
         $this->addEvent(new PasswordChangedEvent($this));
         return $this;
     }
 
-    /**
-     * @param callable(PasswordAuthenticatedUserInterface $user, string $password): bool $passwordValidator
-     */
-    public function validatePassword(#[SensitiveParameter] string $password, callable $passwordValidator): bool
+    public function validatePassword(
+        #[SensitiveParameter] string $password,
+        UserPasswordHasherInterface $passwordHasher,
+    ): bool
     {
-        return $passwordValidator($this, $password);
+        return $passwordHasher->isPasswordValid($this, $password);
     }
 
     public function getRoles(): array
