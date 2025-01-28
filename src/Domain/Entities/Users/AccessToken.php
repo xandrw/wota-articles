@@ -2,10 +2,10 @@
 
 namespace App\Domain\Entities\Users;
 
-use App\Domain\Contract;
 use App\Domain\Entities\EntityInterface;
 use App\Domain\Entities\Users\Events\UserLoggedInEvent;
 use App\Domain\Events\EntityHasEventsTrait;
+use App\Domain\Validation\ValidationTrait;
 use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -14,6 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
 class AccessToken implements EntityInterface
 {
     use EntityHasEventsTrait;
+    use ValidationTrait;
 
     #[ORM\Id, ORM\Column(type: Types::INTEGER), ORM\GeneratedValue]
     private ?int $id = null;
@@ -29,7 +30,7 @@ class AccessToken implements EntityInterface
 
     public function __construct(User $user, int $ttl)
     {
-        Contract::requires($user->getId() !== null, 'error.userId.required');
+        self::requires($user->getId() !== null, 'error.userId.required');
 
         $this->user = $user;
         $this->token = bin2hex(random_bytes(32));

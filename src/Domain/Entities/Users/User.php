@@ -2,10 +2,10 @@
 
 namespace App\Domain\Entities\Users;
 
-use App\Domain\Contract;
 use App\Domain\Entities\EntityInterface;
 use App\Domain\Entities\Users\Events\PasswordChangedEvent;
 use App\Domain\Events\EntityHasEventsTrait;
+use App\Domain\Validation\ValidationTrait;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use SensitiveParameter;
@@ -16,6 +16,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class User implements UserInterface, PasswordAuthenticatedUserInterface, EntityInterface
 {
     use EntityHasEventsTrait;
+    use ValidationTrait;
 
     public const string ROLE_USER = 'ROLE_USER';
     public const string ROLE_ADMIN = 'ROLE_ADMIN';
@@ -64,9 +65,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, EntityI
     public function setEmail(string $email): self
     {
         $emailLength = strlen($email);
-        Contract::requires(empty($email) === false, 'error.email.required');
-        Contract::requires(filter_var($email, FILTER_VALIDATE_EMAIL) !== false, 'error.email.invalid');
-        Contract::requires($emailLength >= 6 && $emailLength <= 60, 'error.email.length');
+        self::requires(empty($email) === false, 'error.email.required');
+        self::requires(filter_var($email, FILTER_VALIDATE_EMAIL) !== false, 'error.email.invalid');
+        self::requires($emailLength >= 6 && $emailLength <= 60, 'error.email.length');
 
         $this->email = $email;
         return $this;
@@ -83,8 +84,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, EntityI
     public function setPassword(#[SensitiveParameter] string $password, callable $passwordHasher): self
     {
         $passwordLength = strlen($password);
-        Contract::requires(empty($password) === false, 'error.password.required');
-        Contract::requires($passwordLength >= 8 && $passwordLength <= 255, 'error.password.length');
+        self::requires(empty($password) === false, 'error.password.required');
+        self::requires($passwordLength >= 8 && $passwordLength <= 255, 'error.password.length');
 
         $this->password = $passwordHasher($this, $password);
         $this->addEvent(new PasswordChangedEvent($this));
@@ -106,7 +107,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, EntityI
 
     public function addRole(string $role): self
     {
-        Contract::requires(in_array($role, self::ROLES, true), 'error.role.invalid');
+        self::requires(in_array($role, self::ROLES, true), 'error.role.invalid');
 
         if (in_array($role, $this->getRoles(), true)) {
             return $this;
