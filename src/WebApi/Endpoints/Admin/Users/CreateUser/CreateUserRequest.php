@@ -2,7 +2,7 @@
 
 namespace App\WebApi\Endpoints\Admin\Users\CreateUser;
 
-use App\Domain\Users\User;
+use App\Domain\Entities\Users\User;
 use SensitiveParameter;
 use Symfony\Component\Validator\Constraints as Assert;
 

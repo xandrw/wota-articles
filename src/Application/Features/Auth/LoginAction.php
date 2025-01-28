@@ -4,8 +4,8 @@ namespace App\Application\Features\Auth;
 
 use App\Application\Exceptions\UnauthorizedException;
 use App\Application\Interfaces\InvokerInterface;
-use App\Domain\Users\AccessToken;
-use App\Domain\Users\User;
+use App\Domain\Entities\Users\AccessToken;
+use App\Domain\Entities\Users\User;
 use Doctrine\ORM\EntityManagerInterface;
 use SensitiveParameter;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -15,7 +15,6 @@ readonly class LoginAction implements InvokerInterface
     public function __construct(
         private EntityManagerInterface $entityManager,
         private UserPasswordHasherInterface $passwordHasher,
-        private DeleteAccessTokensAction $deleteTokensAction,
         private string $accessTokenExpiry,
     )
     {
@@ -32,9 +31,6 @@ readonly class LoginAction implements InvokerInterface
         if ($user->validatePassword($password, $this->passwordHasher->isPasswordValid(...)) === false) {
             throw new UnauthorizedException();
         }
-
-        // todo: Could reimplement this as a event, in case of a password change endpoint
-        $this->deleteTokensAction->__invoke($user);
 
         $accessToken = new AccessToken($user, $this->accessTokenExpiry);
 

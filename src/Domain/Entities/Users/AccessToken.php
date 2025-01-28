@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Domain\Users;
+namespace App\Domain\Entities\Users;
 
 use App\Domain\Contract;
-use App\Domain\EntityInterface;
+use App\Domain\Entities\EntityInterface;
+use App\Domain\Entities\Users\Events\UserLoggedInEvent;
+use App\Domain\Events\EntityHasEventsTrait;
 use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -11,6 +13,8 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity, ORM\Table(name: 'access_tokens')]
 class AccessToken implements EntityInterface
 {
+    use EntityHasEventsTrait;
+
     #[ORM\Id, ORM\Column(type: Types::INTEGER), ORM\GeneratedValue]
     private ?int $id = null;
 
@@ -30,6 +34,7 @@ class AccessToken implements EntityInterface
         $this->user = $user;
         $this->token = bin2hex(random_bytes(32));
         $this->expiresAt = new DateTimeImmutable("+$ttl seconds");
+        $this->addEvent(new UserLoggedInEvent($user));
     }
 
     public function getId(): ?int

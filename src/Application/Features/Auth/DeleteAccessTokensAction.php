@@ -3,8 +3,8 @@
 namespace App\Application\Features\Auth;
 
 use App\Application\Interfaces\InvokerInterface;
-use App\Domain\Users\AccessToken;
-use App\Domain\Users\User;
+use App\Domain\Entities\Users\AccessToken;
+use App\Domain\Entities\Users\User;
 use Doctrine\ORM\EntityManagerInterface;
 
 readonly class DeleteAccessTokensAction implements InvokerInterface

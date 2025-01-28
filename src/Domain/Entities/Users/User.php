@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Domain\Users;
+namespace App\Domain\Entities\Users;
 
 use App\Domain\Contract;
-use App\Domain\EntityInterface;
+use App\Domain\Entities\EntityInterface;
+use App\Domain\Entities\Users\Events\PasswordChangedEvent;
+use App\Domain\Events\EntityHasEventsTrait;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use SensitiveParameter;
@@ -13,6 +15,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[ORM\Entity, ORM\Table(name: 'users')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface, EntityInterface
 {
+    use EntityHasEventsTrait;
+
     public const string ROLE_USER = 'ROLE_USER';
     public const string ROLE_ADMIN = 'ROLE_ADMIN';
     public const array ROLES = [self::ROLE_USER, self::ROLE_ADMIN];
@@ -83,6 +87,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, EntityI
         Contract::requires($passwordLength >= 8 && $passwordLength <= 255, 'error.password.length');
 
         $this->password = $passwordHasher($this, $password);
+        $this->addEvent(new PasswordChangedEvent($this));
         return $this;
     }
 

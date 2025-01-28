@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\WebApi\Endpoints\Auth\ChangePassword;
 
 use App\Application\Features\Auth\ChangePasswordAction;
-use App\Domain\Users\User;
+use App\Domain\Entities\Users\User;
 use App\WebApi\Responses\NoContentResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,7 +29,7 @@ class ChangePasswordEndpoint extends AbstractController
             throw new UnauthorizedHttpException('Bearer realm="Access to change password endpoint"');
         }
 
-        $this->changePasswordAction->__invoke($user->getEmail(), $request->oldPassword, $request->password);
+        ($this->changePasswordAction)($user->getEmail(), $request->oldPassword, $request->password);
 
         return new NoContentResponse();
     }

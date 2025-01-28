@@ -11,7 +11,7 @@ AI Driven Article Summaries
 - [x] Authenticate and Authorize API
 - [x] Intercept Exceptions and return standard JSON response
 - [x] Integrate PHPStorm Xdebug
-- [ ] Wrap write queries in transactions
+- [x] Domain Events published automatically
 - [ ] Logger (Monolog?)
 - [ ] Twig templates
 - [ ] Messenger and Worker functionality for background tasks

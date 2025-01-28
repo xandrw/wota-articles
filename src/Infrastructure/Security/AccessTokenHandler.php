@@ -2,7 +2,7 @@
 
 namespace App\Infrastructure\Security;
 
-use App\Domain\Users\AccessToken;
+use App\Domain\Entities\Users\AccessToken;
 use Doctrine\ORM\EntityManagerInterface;
 use SensitiveParameter;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;

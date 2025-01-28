@@ -2,7 +2,7 @@
 
 namespace App\WebApi\Endpoints\Auth\Login;
 
-use App\Domain\Users\AccessToken;
+use App\Domain\Entities\Users\AccessToken;
 
 readonly class LoginResponse
 {

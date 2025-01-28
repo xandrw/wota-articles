@@ -22,7 +22,7 @@ class LoginEndpoint extends AbstractController
 
     public function __invoke(#[MapRequestPayload] LoginRequest $request): Response
     {
-        $accessToken = $this->loginAction->__invoke($request->email, $request->password);
+        $accessToken = ($this->loginAction)($request->email, $request->password);
 
         return new JsonResponse(LoginResponse::fromEntity($accessToken));
     }

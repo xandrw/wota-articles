@@ -2,7 +2,7 @@
 
 namespace App\Application\Exceptions;
 
-use App\Domain\EntityInterface;
+use App\Domain\Entities\EntityInterface;
 use InvalidArgumentException;
 use RuntimeException;
 use Throwable;

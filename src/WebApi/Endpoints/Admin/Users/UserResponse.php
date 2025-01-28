@@ -2,7 +2,7 @@
 
 namespace App\WebApi\Endpoints\Admin\Users;
 
-use App\Domain\Users\User;
+use App\Domain\Entities\Users\User;
 
 readonly class UserResponse
 {

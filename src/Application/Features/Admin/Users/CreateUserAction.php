@@ -4,7 +4,7 @@ namespace App\Application\Features\Admin\Users;
 
 use App\Application\Exceptions\DuplicateEntityException;
 use App\Application\Interfaces\InvokerInterface;
-use App\Domain\Users\User;
+use App\Domain\Entities\Users\User;
 use Doctrine\ORM\EntityManagerInterface;
 use SensitiveParameter;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
