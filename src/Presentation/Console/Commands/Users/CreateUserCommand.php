@@ -3,6 +3,7 @@
 namespace App\Presentation\Console\Commands\Users;
 
 use App\Application\Features\Admin\Users\CreateUserInvoker;
+use App\Domain\Entities\Users\User;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\QuestionHelper;
@@ -32,7 +33,7 @@ class CreateUserCommand extends Command
         $maskedPassword = str_repeat('*', strlen($password));
         $rolesString = implode(', ', $roles);
 
-        $output->writeln('<info>Creating user...<info>');
+        $output->writeln('<info>Creating User...<info>');
         $output->writeln("<comment>Email:</comment> <fg=cyan>$email</>");
         $output->writeln("<comment>Password:</comment> <fg=yellow>$maskedPassword</>");
         $output->writeln("<comment>Roles:</comment> <fg=green>$rolesString</>");
@@ -41,7 +42,7 @@ class CreateUserCommand extends Command
             ($this->createUserInvoker)($email, $password, $roles);
             $output->writeln("<info>User created</info>");
         } catch (Throwable $e) {
-            $output->writeln("<error>{$e->getMessage()}</error>");
+            $output->writeln("<error>Error: {$e->getMessage()}</error>");
             return Command::FAILURE;
         }
 
@@ -55,6 +56,7 @@ class CreateUserCommand extends Command
             'roles',
             InputArgument::IS_ARRAY,
             'Comma-separated roles for the user (e.g.: ROLE_USER,ROLE_ADMIN)',
+            default: [User::ROLE_USER]
         );
     }
 }
