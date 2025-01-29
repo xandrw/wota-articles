@@ -1,8 +1,8 @@
 <?php
 
-namespace App\WebApi\Listeners;
+namespace App\Presentation\Api\Listeners;
 
-use App\WebApi\Responses\UnprocessableEntityResponse;
+use App\Presentation\Api\Responses\UnprocessableEntityResponse;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;

@@ -17,9 +17,9 @@ services:
         exclude:
             - '../src/Domain/'
             - '../src/Infrastructure/Migrations/'
-            - '../src/WebApi/Kernel.php'
+            - '../src/Presentation/Api/Kernel.php'
     
-    App\WebApi\Endpoints\:
-        resource: '../src/WebApi/Endpoints/**/*Endpoint.php'
+    App\Presentation\Api\Endpoints\:
+        resource: '../src/Presentation/Api/Endpoints/**/*Endpoint.php'
         tags: [ 'controller.service_arguments' ]
         public: true

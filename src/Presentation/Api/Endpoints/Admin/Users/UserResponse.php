@@ -1,6 +1,6 @@
 <?php
 
-namespace App\WebApi\Endpoints\Admin\Users;
+namespace App\Presentation\Api\Endpoints\Admin\Users;
 
 use App\Domain\Entities\Users\User;
 

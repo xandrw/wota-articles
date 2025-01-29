@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\WebApi\Endpoints\Admin\Users\CreateUser;
+namespace App\Presentation\Api\Endpoints\Admin\Users\CreateUser;
 
 use App\Application\Features\Admin\Users\CreateUserInvoker;
 use App\Domain\Entities\Users\User;
-use App\WebApi\Endpoints\Admin\Users\UserResponse;
+use App\Presentation\Api\Endpoints\Admin\Users\UserResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

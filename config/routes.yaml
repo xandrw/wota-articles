@@ -1,5 +1,5 @@
 api:
-    resource: '../src/WebApi/Endpoints/'
+    resource: '../src/Presentation/Api/Endpoints/'
     type: attribute
     prefix: /api
     defaults:

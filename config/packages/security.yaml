@@ -6,7 +6,7 @@ security:
     providers:
         doctrineUsers:
             entity:
-                class: App\Domain\Users\User
+                class: App\Domain\Entities\Users\User
                 property: email
     firewalls:
         # https://symfony.com/doc/current/security.html#the-firewall

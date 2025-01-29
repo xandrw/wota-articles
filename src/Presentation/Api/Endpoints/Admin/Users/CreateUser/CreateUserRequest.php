@@ -1,6 +1,6 @@
 <?php
 
-namespace App\WebApi\Endpoints\Admin\Users\CreateUser;
+namespace App\Presentation\Api\Endpoints\Admin\Users\CreateUser;
 
 use App\Domain\Entities\Users\User;
 use SensitiveParameter;

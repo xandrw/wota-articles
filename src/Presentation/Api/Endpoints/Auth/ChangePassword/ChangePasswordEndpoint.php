@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\WebApi\Endpoints\Auth\ChangePassword;
+namespace App\Presentation\Api\Endpoints\Auth\ChangePassword;
 
 use App\Application\Features\Auth\ChangePasswordInvoker;
 use App\Domain\Entities\Users\User;
-use App\WebApi\Responses\NoContentResponse;
+use App\Presentation\Api\Responses\NoContentResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

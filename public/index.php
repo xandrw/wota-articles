@@ -1,6 +1,6 @@
 <?php
 
-use App\WebApi\Kernel;
+use App\Presentation\Api\Kernel;
 
 require_once dirname(__DIR__).'/vendor/autoload_runtime.php';
 

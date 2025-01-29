@@ -1,6 +1,6 @@
 <?php
 
-namespace App\WebApi\Responses;
+namespace App\Presentation\Api\Responses;
 
 use Symfony\Component\HttpFoundation\Response;
 

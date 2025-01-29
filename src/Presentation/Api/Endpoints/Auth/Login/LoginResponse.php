@@ -1,6 +1,6 @@
 <?php
 
-namespace App\WebApi\Endpoints\Auth\Login;
+namespace App\Presentation\Api\Endpoints\Auth\Login;
 
 use App\Domain\Entities\Users\AccessToken;
 

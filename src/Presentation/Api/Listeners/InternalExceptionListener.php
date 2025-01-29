@@ -1,9 +1,9 @@
 <?php
 
-namespace App\WebApi\Listeners;
+namespace App\Presentation\Api\Listeners;
 
 use App\Application\Exceptions\ApplicationExceptionInterface;
-use App\WebApi\Responses\InternalServerErrorResponse;
+use App\Presentation\Api\Responses\InternalServerErrorResponse;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;

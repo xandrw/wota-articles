@@ -1,6 +1,6 @@
 <?php
 
-namespace App\WebApi\Listeners;
+namespace App\Presentation\Api\Listeners;
 
 use App\Application\Exceptions\ApplicationExceptionInterface;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
