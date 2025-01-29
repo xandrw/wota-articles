@@ -4,9 +4,11 @@ namespace App\Application\Features\Auth;
 
 use App\Application\Exceptions\UnauthorizedException;
 use App\Application\Features\InvokerInterface;
+use App\Domain\Entities\Users\Events\PasswordChangedEvent;
 use App\Domain\Entities\Users\User;
 use Doctrine\ORM\EntityManagerInterface;
 use SensitiveParameter;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 readonly class ChangePasswordInvoker implements InvokerInterface
@@ -14,6 +16,7 @@ readonly class ChangePasswordInvoker implements InvokerInterface
     public function __construct(
         private EntityManagerInterface $entityManager,
         private UserPasswordHasherInterface $passwordHasher,
+        private EventDispatcherInterface $eventDispatcher,
     )
     {
     }
@@ -37,5 +40,6 @@ readonly class ChangePasswordInvoker implements InvokerInterface
         $user->setPassword($newPassword, $this->passwordHasher);
         $this->entityManager->persist($user);
         $this->entityManager->flush();
+        $this->eventDispatcher->dispatch(new PasswordChangedEvent($user));
     }
 }

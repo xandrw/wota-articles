@@ -3,8 +3,6 @@
 namespace App\Domain\Entities\Users;
 
 use App\Domain\Entities\EntityInterface;
-use App\Domain\Entities\Users\Events\PasswordChangedEvent;
-use App\Domain\Events\EntityHasEventsTrait;
 use App\Domain\Validation\ValidationTrait;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -16,7 +14,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[ORM\Entity, ORM\Table(name: 'users')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface, EntityInterface
 {
-    use EntityHasEventsTrait;
     use ValidationTrait;
 
     public const string ROLE_USER = 'ROLE_USER';
@@ -86,7 +83,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, EntityI
         self::requires($passwordLength >= 8 && $passwordLength <= 255, 'error.password.length');
 
         $this->password = $passwordHasher->hashPassword($this, $password);
-        $this->addEvent(new PasswordChangedEvent($this));
         return $this;
     }
 
