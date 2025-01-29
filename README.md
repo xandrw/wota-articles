@@ -13,6 +13,7 @@ AI Driven Article Summaries
 - [x] Integrate PHPStorm Xdebug
 - [x] Domain Events published automatically
 - [x] Add command/s
+- [x] Add Presentation/APIs layer
 - [ ] Force json on REST API
 - [ ] Logger (Monolog?)
 - [ ] Twig templates
