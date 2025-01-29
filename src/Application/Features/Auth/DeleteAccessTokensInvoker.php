@@ -2,12 +2,12 @@
 
 namespace App\Application\Features\Auth;
 
-use App\Application\Interfaces\InvokerInterface;
+use App\Application\Features\InvokerInterface;
 use App\Domain\Entities\Users\AccessToken;
 use App\Domain\Entities\Users\User;
 use Doctrine\ORM\EntityManagerInterface;
 
-readonly class DeleteAccessTokensAction implements InvokerInterface
+readonly class DeleteAccessTokensInvoker implements InvokerInterface
 {
     public function __construct(private EntityManagerInterface $entityManager)
     {

@@ -3,7 +3,7 @@
 namespace App\Application\Features\Auth;
 
 use App\Application\Exceptions\UnauthorizedException;
-use App\Application\Interfaces\InvokerInterface;
+use App\Application\Features\InvokerInterface;
 use App\Domain\Entities\Users\AccessToken;
 use App\Domain\Entities\Users\User;
 use App\Infrastructure\Security\UuidRandomizer;
@@ -11,7 +11,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use SensitiveParameter;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-readonly class LoginAction implements InvokerInterface
+readonly class LoginInvoker implements InvokerInterface
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
@@ -34,10 +34,8 @@ readonly class LoginAction implements InvokerInterface
         }
 
         $accessToken = new AccessToken($user, $this->accessTokenExpiry, new UuidRandomizer());
-
         $this->entityManager->persist($accessToken);
         $this->entityManager->flush();
-
         return $accessToken;
     }
 }

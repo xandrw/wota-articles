@@ -11,7 +11,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 /** @SuppressUnused */
 readonly class InvalidateTokensSubscriber implements EventSubscriberInterface
 {
-    public function __construct(private DeleteAccessTokensAction $deleteTokensAction)
+    public function __construct(private DeleteAccessTokensInvoker $deleteTokensInvoker)
     {
     }
 
@@ -30,6 +30,6 @@ readonly class InvalidateTokensSubscriber implements EventSubscriberInterface
             return;
         }
 
-        ($this->deleteTokensAction)($entity);
+        ($this->deleteTokensInvoker)($entity);
     }
 }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\WebApi\Endpoints\Admin\Users\CreateUser;
 
-use App\Application\Features\Admin\Users\CreateUserAction;
+use App\Application\Features\Admin\Users\CreateUserInvoker;
 use App\Domain\Entities\Users\User;
 use App\WebApi\Endpoints\Admin\Users\UserResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -21,7 +21,7 @@ use Throwable;
 #[Route(path: '/admin/users', name: 'api.admin.users.create', methods: [Request::METHOD_POST])]
 class CreateUserEndpoint extends AbstractController
 {
-    public function __construct(private readonly CreateUserAction $createUserAction)
+    public function __construct(private readonly CreateUserInvoker $createUserInvoker)
     {
     }
 
@@ -30,7 +30,7 @@ class CreateUserEndpoint extends AbstractController
      */
     public function __invoke(#[MapRequestPayload] CreateUserRequest $request): Response
     {
-        $user = ($this->createUserAction)($request->email, $request->password, $request->roles);
+        $user = ($this->createUserInvoker)($request->email, $request->password, $request->roles);
         return new JsonResponse(UserResponse::fromEntity($user), Response::HTTP_CREATED);
     }
 }

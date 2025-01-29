@@ -3,14 +3,14 @@
 namespace App\Application\Features\Admin\Users;
 
 use App\Application\Exceptions\DuplicateEntityException;
-use App\Application\Interfaces\InvokerInterface;
+use App\Application\Features\InvokerInterface;
 use App\Domain\Entities\Users\User;
 use Doctrine\ORM\EntityManagerInterface;
 use SensitiveParameter;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Throwable;
 
-readonly class CreateUserAction implements InvokerInterface
+readonly class CreateUserInvoker implements InvokerInterface
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
@@ -33,7 +33,6 @@ readonly class CreateUserAction implements InvokerInterface
         $user = new User($email, $password, $roles, $this->userPasswordHasher);
         $this->entityManager->persist($user);
         $this->entityManager->flush();
-
         return $user;
     }
 }

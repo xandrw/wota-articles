@@ -1,5 +1,5 @@
 <?php
 
-namespace App\Application\Interfaces;
+namespace App\Application\Features;
 
 interface InvokerInterface {}
