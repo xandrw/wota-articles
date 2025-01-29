@@ -30,6 +30,7 @@ class CreateUserEndpoint extends AbstractController
      */
     public function __invoke(#[MapRequestPayload] CreateUserRequest $request): Response
     {
+        // TODO: peer review __invoke() call instead of this notation
         $user = ($this->createUserInvoker)($request->email, $request->password, $request->roles);
         return new JsonResponse(UserResponse::fromEntity($user), Response::HTTP_CREATED);
     }

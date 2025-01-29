@@ -29,6 +29,7 @@ class ChangePasswordEndpoint extends AbstractController
             throw new UnauthorizedHttpException('Bearer realm="Access to change password endpoint"');
         }
 
+        // TODO: peer review __invoke() call instead of this notation
         ($this->changePasswordInvoker)($user->getEmail(), $request->oldPassword, $request->password);
 
         return new NoContentResponse();

@@ -18,8 +18,9 @@ class DuplicateEntityException extends RuntimeException implements ApplicationEx
         }
 
         $class = substr($class, strrpos($class, '\\') + 1);
+        $class = strtolower($class);
 
-        parent::__construct("$class already exists", $code, $previous);
+        parent::__construct("error.$class.exists", $code, $previous);
     }
 
     /**

@@ -24,13 +24,13 @@ readonly class CreateUserInvoker implements InvokerInterface
      */
     public function __invoke(string $email, #[SensitiveParameter] string $password, array $roles): User
     {
+        $user = new User($email, $password, $roles, $this->userPasswordHasher);
         $userExists = (bool) $this->entityManager->getRepository(User::class)->count(['email' => $email]);
 
         if ($userExists) {
             throw new DuplicateEntityException(User::class);
         }
 
-        $user = new User($email, $password, $roles, $this->userPasswordHasher);
         $this->entityManager->persist($user);
         $this->entityManager->flush();
         return $user;

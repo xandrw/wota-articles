@@ -7,6 +7,7 @@ use InvalidArgumentException;
 use RuntimeException;
 use Throwable;
 
+/** @SuppressUnused */
 class EntityNotFoundException extends RuntimeException implements ApplicationExceptionInterface
 {
     /** @param class-string<EntityInterface> $class */
@@ -17,7 +18,7 @@ class EntityNotFoundException extends RuntimeException implements ApplicationExc
         }
 
         $class = substr($class, strrpos($class, '\\') + 1);
-
-        parent::__construct("$class not found", $code, $previous);
+        $class = strtolower($class);
+        parent::__construct("error.$class.notFound", $code, $previous);
     }
 }

@@ -30,6 +30,7 @@ readonly class InvalidateTokensSubscriber implements EventSubscriberInterface
             return;
         }
 
+        // TODO: peer review __invoke() call instead of this notation
         ($this->deleteUserTokensInvoker)($entity);
     }
 }
