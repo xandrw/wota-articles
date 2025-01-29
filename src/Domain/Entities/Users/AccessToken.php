@@ -14,14 +14,10 @@ class AccessToken implements EntityInterface
 {
     use ValidationTrait;
 
-    // TODO: remove id
-    #[ORM\Id, ORM\Column(type: Types::INTEGER), ORM\GeneratedValue]
-    private ?int $id = null;
-
     #[ORM\ManyToOne(targetEntity: User::class), ORM\JoinColumn(nullable: false)]
     private User $user;
 
-    #[ORM\Column(type: Types::STRING, unique: true)]
+    #[ORM\Id, ORM\Column(type: Types::STRING, unique: true)]
     private string $token;
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
@@ -34,11 +30,6 @@ class AccessToken implements EntityInterface
         $this->user = $user;
         $this->token = $random->generate();
         $this->expiresAt = new DateTimeImmutable("+$ttl seconds");
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     public function getUser(): User

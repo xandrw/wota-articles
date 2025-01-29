@@ -11,15 +11,15 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 /** @SuppressUnused */
 readonly class InvalidateTokensSubscriber implements EventSubscriberInterface
 {
-    public function __construct(private DeleteAccessTokensInvoker $deleteTokensInvoker)
+    public function __construct(private DeleteUserTokensInvoker $deleteUserTokensInvoker)
     {
     }
 
     public static function getSubscribedEvents(): array
     {
         return [
-            UserLoggedInEvent::class => ['invalidate', 0],
-            PasswordChangedEvent::class => ['invalidate', 0],
+            UserLoggedInEvent::class => ['invalidate'],
+            PasswordChangedEvent::class => ['invalidate'],
         ];
     }
 
@@ -30,6 +30,6 @@ readonly class InvalidateTokensSubscriber implements EventSubscriberInterface
             return;
         }
 
-        ($this->deleteTokensInvoker)($entity);
+        ($this->deleteUserTokensInvoker)($entity);
     }
 }

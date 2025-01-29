@@ -38,8 +38,13 @@ readonly class ChangePasswordInvoker implements InvokerInterface
         }
 
         $user->setPassword($newPassword, $this->passwordHasher);
+        $this->eventDispatcher->dispatch($this->getEvent($user));
         $this->entityManager->persist($user);
         $this->entityManager->flush();
-        $this->eventDispatcher->dispatch(new PasswordChangedEvent($user));
+    }
+
+    protected function getEvent(User $user): PasswordChangedEvent
+    {
+        return new PasswordChangedEvent($user);
     }
 }

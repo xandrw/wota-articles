@@ -7,7 +7,7 @@ use App\Domain\Entities\Users\AccessToken;
 use App\Domain\Entities\Users\User;
 use Doctrine\ORM\EntityManagerInterface;
 
-readonly class DeleteAccessTokensInvoker implements InvokerInterface
+readonly class DeleteUserTokensInvoker implements InvokerInterface
 {
     public function __construct(private EntityManagerInterface $entityManager)
     {

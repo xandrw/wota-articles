@@ -19,6 +19,7 @@ readonly class LoginInvoker implements InvokerInterface
         private EntityManagerInterface $entityManager,
         private UserPasswordHasherInterface $passwordHasher,
         private EventDispatcherInterface $eventDispatcher,
+        private UuidRandomizer $uuidRandomizer,
         private string $accessTokenExpiry,
     )
     {
@@ -36,10 +37,15 @@ readonly class LoginInvoker implements InvokerInterface
             throw new UnauthorizedException();
         }
 
-        $accessToken = new AccessToken($user, $this->accessTokenExpiry, new UuidRandomizer());
-        $this->eventDispatcher->dispatch(new UserLoggedInEvent($user));
+        $accessToken = new AccessToken($user, $this->accessTokenExpiry, $this->uuidRandomizer);
+        $this->eventDispatcher->dispatch($this->getEvent($user));
         $this->entityManager->persist($accessToken);
         $this->entityManager->flush();
         return $accessToken;
+    }
+
+    protected function getEvent(User $user): UserLoggedInEvent
+    {
+        return new UserLoggedInEvent($user);
     }
 }
