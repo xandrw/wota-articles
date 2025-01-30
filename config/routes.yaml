@@ -1,6 +1,5 @@
 api:
     resource: '../src/Presentation/Api/Endpoints/'
     type: attribute
-    prefix: /api
-    defaults:
-        _format: json
+    requirements:
+        Content-Type: 'application/json'

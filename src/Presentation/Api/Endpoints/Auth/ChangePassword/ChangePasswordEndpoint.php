@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 
 /** @SuppressUnused */
-#[Route(path: '/change-password', name: 'api.auth.changePassword', methods: [Request::METHOD_POST])]
+#[Route(path: '/api/auth/change-password', name: 'api.auth.changePassword', methods: [Request::METHOD_POST])]
 class ChangePasswordEndpoint extends AbstractController
 {
     public function __construct(private readonly ChangePasswordInvoker $changePasswordInvoker)

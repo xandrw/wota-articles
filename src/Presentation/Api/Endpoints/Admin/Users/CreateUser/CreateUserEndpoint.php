@@ -18,7 +18,7 @@ use Throwable;
 
 /** @SuppressUnused */
 #[IsGranted(User::ROLE_ADMIN, message: 'Forbidden')]
-#[Route(path: '/admin/users', name: 'api.admin.users.create', methods: [Request::METHOD_POST])]
+#[Route(path: '/api/admin/users', name: 'api.admin.users.create', methods: [Request::METHOD_POST])]
 class CreateUserEndpoint extends AbstractController
 {
     public function __construct(private readonly CreateUserInvoker $createUserInvoker)

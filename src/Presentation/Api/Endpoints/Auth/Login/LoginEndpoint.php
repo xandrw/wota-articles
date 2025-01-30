@@ -13,7 +13,7 @@ use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 
 /** @SuppressUnused */
-#[Route(path: '/login', name: 'api.auth.login', methods: [Request::METHOD_POST])]
+#[Route(path: '/api/auth/login', name: 'api.auth.login', methods: [Request::METHOD_POST])]
 class LoginEndpoint extends AbstractController
 {
     public function __construct(private readonly LoginInvoker $loginInvoker)
