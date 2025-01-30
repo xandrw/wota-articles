@@ -28,21 +28,21 @@ class CreateUserCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         ['email' => $email, 'roles' => $roles] = $input->getArguments();
-        $question = (new Question('<comment>Password:</comment> '))->setHidden(true)->setHiddenFallback(false);
+        $question = (new Question('<comment>Password:</comment>'))->setHidden(true)->setHiddenFallback(false);
         $password = (new QuestionHelper())->ask($input, $output, $question);
         $maskedPassword = str_repeat('*', strlen($password));
         $rolesString = implode(', ', $roles);
 
         $output->writeln('<info>Creating User...<info>');
         $output->writeln("<comment>Email:</comment> <fg=cyan>$email</>");
-        $output->writeln("<comment>Password:</comment> <fg=yellow>$maskedPassword</>");
-        $output->writeln("<comment>Roles:</comment> <fg=green>$rolesString</>");
+        $output->writeln("<comment>Password:</comment> <fg=cyan>$maskedPassword</>");
+        $output->writeln("<comment>Roles:</comment> <fg=cyan>$rolesString</>");
 
         try {
             ($this->createUserInvoker)($email, $password, $roles);
-            $output->writeln("<info>User created</info>");
+            $output->writeln(["<info>User created</info>", '']);
         } catch (Throwable $e) {
-            $output->writeln("<error>Error: {$e->getMessage()}</error>");
+            $output->writeln(["<error>Error: {$e->getMessage()}</error>", '']);
             return Command::FAILURE;
         }
 
