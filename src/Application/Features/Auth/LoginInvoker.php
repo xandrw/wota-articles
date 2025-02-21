@@ -7,7 +7,7 @@ use App\Application\Features\InvokerInterface;
 use App\Domain\Entities\Users\AccessToken;
 use App\Domain\Entities\Users\Events\UserLoggedInEvent;
 use App\Domain\Entities\Users\User;
-use App\Infrastructure\Security\UuidRandomizer;
+use App\Domain\Interfaces\RandomInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use SensitiveParameter;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -19,7 +19,7 @@ readonly class LoginInvoker implements InvokerInterface
         private EntityManagerInterface $entityManager,
         private UserPasswordHasherInterface $passwordHasher,
         private EventDispatcherInterface $eventDispatcher,
-        private UuidRandomizer $uuidRandomizer,
+        private RandomInterface $randomizer,
         private string $accessTokenExpiry,
     )
     {
@@ -37,7 +37,7 @@ readonly class LoginInvoker implements InvokerInterface
             throw new UnauthorizedException();
         }
 
-        $accessToken = new AccessToken($user, $this->accessTokenExpiry, $this->uuidRandomizer);
+        $accessToken = new AccessToken($user, $this->accessTokenExpiry, $this->randomizer);
         $this->eventDispatcher->dispatch($this->getEvent($user));
         $this->entityManager->persist($accessToken);
         $this->entityManager->flush();

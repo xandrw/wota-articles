@@ -23,3 +23,5 @@ services:
         resource: '../src/Presentation/Api/Endpoints/**/*Endpoint.php'
         tags: [ 'controller.service_arguments' ]
         public: true
+    
+    App\Domain\Interfaces\RandomInterface: '@App\Infrastructure\Security\UuidRandomizer'
