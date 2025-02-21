@@ -5,6 +5,7 @@ namespace App\Infrastructure\Security;
 use App\Domain\Interfaces\RandomInterface;
 use Symfony\Component\Uid\Uuid;
 
+/** @SuppressUnused */
 class UuidRandomizer implements RandomInterface
 {
     public function generate(): string

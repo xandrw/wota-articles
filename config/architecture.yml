@@ -1,0 +1,18 @@
+architecture:
+    'App\Presentation':
+        - 'App\Infrastructure'
+        - 'App\Application'
+        - 'App\Domain'
+    'App\Infrastructure':
+        - 'App\Application'
+        - 'App\Domain'
+    'App\Application':
+        - 'App\Domain'
+    'App\Domain': ['App\Domain', 'Symfony', 'Doctrine', 'ORM']
+ignore:
+    - bin
+    - config
+    - public
+    - tests
+    - var
+    - vendor

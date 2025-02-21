@@ -22,6 +22,17 @@ class CreateUserCommand extends Command
         parent::__construct();
     }
 
+    protected function configure(): void
+    {
+        $this->addArgument('email', InputArgument::REQUIRED);
+        $this->addArgument(
+            'roles',
+            InputArgument::IS_ARRAY,
+            'Comma-separated roles for the user (e.g.: ROLE_USER,ROLE_ADMIN)',
+            default: [User::ROLE_USER],
+        );
+    }
+
     /**
      * @throws Throwable
      */
@@ -47,16 +58,5 @@ class CreateUserCommand extends Command
         }
 
         return Command::SUCCESS;
-    }
-
-    protected function configure(): void
-    {
-        $this->addArgument('email', InputArgument::REQUIRED);
-        $this->addArgument(
-            'roles',
-            InputArgument::IS_ARRAY,
-            'Comma-separated roles for the user (e.g.: ROLE_USER,ROLE_ADMIN)',
-            default: [User::ROLE_USER]
-        );
     }
 }
