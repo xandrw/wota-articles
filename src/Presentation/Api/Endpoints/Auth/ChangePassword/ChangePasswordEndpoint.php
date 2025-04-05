@@ -19,9 +19,7 @@ use Symfony\Component\Security\Http\Attribute\CurrentUser;
 #[Route(path: '/api/auth/change-password', name: 'api.auth.changePassword', methods: [Request::METHOD_POST])]
 class ChangePasswordEndpoint extends AbstractController
 {
-    public function __construct(private readonly ChangePasswordInvoker $changePasswordInvoker)
-    {
-    }
+    public function __construct(private readonly ChangePasswordInvoker $changePasswordInvoker) {}
 
     public function __invoke(#[MapRequestPayload] ChangePasswordRequest $request, #[CurrentUser] ?User $user): Response
     {
@@ -29,8 +27,7 @@ class ChangePasswordEndpoint extends AbstractController
             throw new UnauthorizedHttpException('Bearer realm="Access to change password endpoint"');
         }
 
-        // TODO: peer review __invoke() call instead of this notation
-        ($this->changePasswordInvoker)($user->getEmail(), $request->oldPassword, $request->password);
+        $this->changePasswordInvoker->__invoke($user->getEmail(), $request->oldPassword, $request->password);
 
         return new NoContentResponse();
     }

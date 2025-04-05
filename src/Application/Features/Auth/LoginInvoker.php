@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Application\Features\Auth;
 
 use App\Application\Exceptions\UnauthorizedException;
@@ -21,9 +23,7 @@ readonly class LoginInvoker implements InvokerInterface
         private EventDispatcherInterface $eventDispatcher,
         private RandomInterface $randomizer,
         private string $accessTokenExpiry,
-    )
-    {
-    }
+    ) {}
 
     public function __invoke(string $email, #[SensitiveParameter] string $password): AccessToken
     {
@@ -37,8 +37,8 @@ readonly class LoginInvoker implements InvokerInterface
             throw new UnauthorizedException();
         }
 
-        $accessToken = new AccessToken($user, $this->accessTokenExpiry, $this->randomizer);
-        $this->eventDispatcher->dispatch($this->getEvent($user));
+        $accessToken = new AccessToken($user, (int) $this->accessTokenExpiry, $this->randomizer);
+        $this->eventDispatcher->dispatch($this->getEvent($user), UserLoggedInEvent::class);
         $this->entityManager->persist($accessToken);
         $this->entityManager->flush();
         return $accessToken;

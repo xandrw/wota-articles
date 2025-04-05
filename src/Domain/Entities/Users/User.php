@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Domain\Entities\Users;
 
 use App\Domain\Entities\EntityInterface;
@@ -30,8 +32,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, EntityI
     private string $password;
 
     /** @var string[] */
-    #[ORM\Column(type: Types::JSON)]
-    private array $roles = [];
+    #[ORM\Column(type: Types::JSON, options: ['default' => '["ROLE_USER"]'])]
+    private array $roles = [self::ROLE_USER];
 
     public function __construct(
         string $email,
@@ -113,7 +115,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, EntityI
 
     public function removeRole(string $role): self
     {
-        if (in_array($role, $this->getRoles(), true) === false || $role === self::ROLE_USER) {
+        // Restrict removing the default role
+        if ($role === self::ROLE_USER) {
             return $this;
         }
 
@@ -143,6 +146,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, EntityI
             $this->roles = [self::ROLE_USER];
             return;
         }
+
+        $roles[] = self::ROLE_USER;
+        $roles = array_unique($roles);
+
+        $this->roles = [];
 
         foreach ($roles as $role) {
             $this->addRole($role);
