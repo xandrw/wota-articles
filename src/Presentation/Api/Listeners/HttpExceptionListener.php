@@ -34,7 +34,7 @@ class HttpExceptionListener
 
         if ($previousException instanceof ValidationFailedException) {
             $event->setResponse(new UnprocessableEntityResponse(
-                $previousException->getViolations(),
+                violations: $previousException->getViolations(),
                 headers: $exception->getHeaders(),
             ));
             return;

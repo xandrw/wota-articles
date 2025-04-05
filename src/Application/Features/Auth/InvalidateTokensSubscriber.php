@@ -6,6 +6,7 @@ namespace App\Application\Features\Auth;
 
 use App\Domain\Entities\Users\Events\PasswordChangedEvent;
 use App\Domain\Entities\Users\Events\UserLoggedInEvent;
+use App\Domain\Entities\Users\Events\UserLoggedOutEvent;
 use App\Domain\Entities\Users\User;
 use App\Domain\Events\DomainEventInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -19,6 +20,7 @@ readonly class InvalidateTokensSubscriber implements EventSubscriberInterface
     {
         return [
             UserLoggedInEvent::class => ['invalidate'],
+            UserLoggedOutEvent::class => ['invalidate'],
             PasswordChangedEvent::class => ['invalidate'],
         ];
     }

@@ -14,9 +14,7 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 /** @SuppressUnused */
 readonly class AccessTokenHandler implements AccessTokenHandlerInterface
 {
-    public function __construct(private EntityManagerInterface $entityManager)
-    {
-    }
+    public function __construct(private EntityManagerInterface $entityManager) {}
 
     public function getUserBadgeFrom(#[SensitiveParameter] string $accessToken): UserBadge
     {
