@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Application\Features\Admin\Users;
 
 use App\Application\Features\InvokerInterface;
@@ -11,11 +13,7 @@ use Exception;
 
 readonly class ListPaginatedUsersInvoker implements InvokerInterface
 {
-    public function __construct(private EntityManagerInterface $entityManager)
-    {
-        $f = \App\Infrastructure\Security\UuidRandomizer::class;
-        $f2 = \App\Presentation\Api\Endpoints\Admin\Users\UserResponse::class;
-    }
+    public function __construct(private EntityManagerInterface $entityManager) {}
 
     /**
      * @return PaginatedResult<User>
@@ -23,6 +21,9 @@ readonly class ListPaginatedUsersInvoker implements InvokerInterface
      */
     public function __invoke(int $pageNumber, int $pageSize): PaginatedResult
     {
+        $pageNumber = max(1, $pageNumber);
+        $pageSize = max(1, $pageSize);
+
         $queryBuilder = $this->entityManager
             ->getRepository(User::class)
             ->createQueryBuilder('u')

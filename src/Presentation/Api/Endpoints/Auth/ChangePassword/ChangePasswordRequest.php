@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Presentation\Api\Endpoints\Auth\ChangePassword;
 
 use SensitiveParameter;
@@ -29,7 +31,5 @@ readonly class ChangePasswordRequest
         )]
         #[SensitiveParameter]
         public string $password,
-    )
-    {
-    }
+    ) {}
 }

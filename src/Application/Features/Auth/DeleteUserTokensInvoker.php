@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Application\Features\Auth;
 
 use App\Application\Features\InvokerInterface;
@@ -9,9 +11,7 @@ use Doctrine\ORM\EntityManagerInterface;
 
 readonly class DeleteUserTokensInvoker implements InvokerInterface
 {
-    public function __construct(private EntityManagerInterface $entityManager)
-    {
-    }
+    public function __construct(private EntityManagerInterface $entityManager) {}
 
     public function __invoke(User $user): void
     {

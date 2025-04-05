@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Presentation\Console\Commands\Users;
 
 use App\Application\Features\Admin\Users\CreateUserInvoker;
@@ -50,7 +52,7 @@ class CreateUserCommand extends Command
         $output->writeln("<comment>Roles:</comment> <fg=cyan>$rolesString</>");
 
         try {
-            ($this->createUserInvoker)($email, $password, $roles);
+            $this->createUserInvoker->__invoke($email, $password, $roles);
             $output->writeln(["<info>User created</info>", '']);
         } catch (Throwable $e) {
             $output->writeln(["<error>Error: {$e->getMessage()}</error>", '']);

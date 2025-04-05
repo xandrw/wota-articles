@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Application\Features\Admin\Users;
 
 use App\Application\Exceptions\DuplicateEntityException;
@@ -15,9 +17,7 @@ readonly class CreateUserInvoker implements InvokerInterface
     public function __construct(
         private EntityManagerInterface $entityManager,
         private UserPasswordHasherInterface $userPasswordHasher,
-    )
-    {
-    }
+    ) {}
 
     /**
      * @throws Throwable

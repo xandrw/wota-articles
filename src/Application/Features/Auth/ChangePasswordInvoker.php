@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Application\Features\Auth;
 
 use App\Application\Exceptions\UnauthorizedException;
@@ -38,7 +40,7 @@ readonly class ChangePasswordInvoker implements InvokerInterface
         }
 
         $user->setPassword($newPassword, $this->passwordHasher);
-        $this->eventDispatcher->dispatch($this->getEvent($user));
+        $this->eventDispatcher->dispatch($this->getEvent($user), PasswordChangedEvent::class);
         $this->entityManager->persist($user);
         $this->entityManager->flush();
     }
