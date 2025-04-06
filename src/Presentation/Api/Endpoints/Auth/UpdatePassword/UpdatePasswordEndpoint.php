@@ -28,7 +28,6 @@ class UpdatePasswordEndpoint extends AbstractController
         }
 
         $this->updatePasswordInvoker->__invoke($user->getEmail(), $request->oldPassword, $request->password);
-
         return new NoContentResponse();
     }
 }

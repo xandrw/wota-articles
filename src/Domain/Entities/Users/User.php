@@ -130,23 +130,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, EntityI
         return $this;
     }
 
-    public function removeRole(string $role): self
-    {
-        // Restrict removing the default role
-        if ($role === self::ROLE_USER) {
-            return $this;
-        }
-
-        $roleIndex = array_search($role, $this->getRoles(), true);
-
-        if ($roleIndex === false) {
-            return $this;
-        }
-
-        unset($this->roles[$roleIndex]);
-        return $this;
-    }
-
     public function getUserIdentifier(): string
     {
         return $this->email;

@@ -22,7 +22,7 @@ readonly class LoginInvoker implements InvokerInterface
         private UserPasswordHasherInterface $passwordHasher,
         private EventDispatcherInterface $eventDispatcher,
         private RandomInterface $randomizer,
-        private string $accessTokenExpiry,
+        private int $accessTokenExpiry,
     ) {}
 
     public function __invoke(string $email, #[SensitiveParameter] string $password): AccessToken
@@ -37,7 +37,7 @@ readonly class LoginInvoker implements InvokerInterface
             throw new UnauthorizedException();
         }
 
-        $accessToken = new AccessToken($user, (int) $this->accessTokenExpiry, $this->randomizer);
+        $accessToken = new AccessToken($user, $this->accessTokenExpiry, $this->randomizer);
         $this->eventDispatcher->dispatch($this->getEvent($user), UserLoggedInEvent::class);
         $this->entityManager->persist($accessToken);
         $this->entityManager->flush();

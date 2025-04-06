@@ -27,8 +27,12 @@ class LogoutEndpoint extends AbstractController
             throw new UnauthorizedHttpException('Bearer realm="Access to logout endpoint"');
         }
 
-        $this->eventDispatcher->dispatch(new UserLoggedOutEvent($user));
-
+        $this->eventDispatcher->dispatch($this->getEvent($user));
         return new NoContentResponse();
+    }
+
+    protected function getEvent(User $user): UserLoggedOutEvent
+    {
+        return new UserLoggedOutEvent($user);
     }
 }

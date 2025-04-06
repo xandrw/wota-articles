@@ -27,7 +27,6 @@ class GetUserEndpoint extends AbstractController
     public function __invoke(int $userId): Response
     {
         $user = $this->getUserByIdInvoker->__invoke($userId);
-
         return new JsonResponse(UserResponse::fromEntity($user), Response::HTTP_OK);
     }
 }
