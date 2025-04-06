@@ -13,7 +13,7 @@ use SensitiveParameter;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-readonly class ChangePasswordInvoker implements InvokerInterface
+readonly class UpdatePasswordInvoker implements InvokerInterface
 {
     public function __construct(
         private EntityManagerInterface $entityManager,

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Presentation\Api\Endpoints\Auth\ChangePassword;
+namespace App\Presentation\Api\Endpoints\Auth\UpdatePassword;
 
-use App\Application\Features\Auth\ChangePasswordInvoker;
+use App\Application\Features\Auth\UpdatePasswordInvoker;
 use App\Domain\Entities\Users\User;
 use App\Presentation\Api\Responses\NoContentResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,18 +16,18 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 
 /** @SuppressUnused */
-#[Route(path: '/api/auth/change-password', name: 'api.auth.changePassword', methods: [Request::METHOD_POST])]
-class ChangePasswordEndpoint extends AbstractController
+#[Route(path: '/api/auth/password', name: 'api.auth.updatePassword', methods: [Request::METHOD_POST])]
+class UpdatePasswordEndpoint extends AbstractController
 {
-    public function __construct(private readonly ChangePasswordInvoker $changePasswordInvoker) {}
+    public function __construct(private readonly UpdatePasswordInvoker $updatePasswordInvoker) {}
 
-    public function __invoke(#[MapRequestPayload] ChangePasswordRequest $request, #[CurrentUser] ?User $user): Response
+    public function __invoke(#[MapRequestPayload] UpdatePasswordRequest $request, #[CurrentUser] ?User $user): Response
     {
         if ($user === null) {
             throw new UnauthorizedHttpException('Bearer realm="Access to change password endpoint"');
         }
 
-        $this->changePasswordInvoker->__invoke($user->getEmail(), $request->oldPassword, $request->password);
+        $this->updatePasswordInvoker->__invoke($user->getEmail(), $request->oldPassword, $request->password);
 
         return new NoContentResponse();
     }

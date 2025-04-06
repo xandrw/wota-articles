@@ -10,7 +10,6 @@ use App\Domain\Entities\Users\User;
 use Doctrine\ORM\EntityManagerInterface;
 use SensitiveParameter;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Throwable;
 
 readonly class CreateUserInvoker implements InvokerInterface
 {
@@ -20,7 +19,7 @@ readonly class CreateUserInvoker implements InvokerInterface
     ) {}
 
     /**
-     * @throws Throwable
+     * @throws DuplicateEntityException
      */
     public function __invoke(string $email, #[SensitiveParameter] string $password, array $roles): User
     {

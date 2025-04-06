@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Presentation\Api\Endpoints\Auth\ChangePassword;
+namespace App\Presentation\Api\Endpoints\Auth\UpdatePassword;
 
 use SensitiveParameter;
 use Symfony\Component\Validator\Constraints as Assert;
 
-readonly class ChangePasswordRequest
+readonly class UpdatePasswordRequest
 {
     public function __construct(
         #[Assert\NotNull(message: 'error.oldPassword.required')]

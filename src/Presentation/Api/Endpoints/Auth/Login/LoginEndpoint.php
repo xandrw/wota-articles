@@ -16,9 +16,7 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route(path: '/api/auth/login', name: 'api.auth.login', methods: [Request::METHOD_POST])]
 class LoginEndpoint extends AbstractController
 {
-    public function __construct(private readonly LoginInvoker $loginInvoker)
-    {
-    }
+    public function __construct(private readonly LoginInvoker $loginInvoker) {}
 
     public function __invoke(#[MapRequestPayload] LoginRequest $request): Response
     {

@@ -105,12 +105,21 @@
 							"response": []
 						},
 						{
-							"name": "/api/admin/users/{id}/roles/{role}",
+							"name": "/api/admin/users/{id}/roles",
 							"request": {
-								"method": "DELETE",
+								"method": "POST",
 								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"roles\": [\"ROLE_ADMIN\"]\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
 								"url": {
-									"raw": "{{host}}/api/admin/users/10/roles/ROLE_ADMIN",
+									"raw": "{{host}}/api/admin/users/1/roles",
 									"host": [
 										"{{host}}"
 									],
@@ -118,9 +127,8 @@
 										"api",
 										"admin",
 										"users",
-										"10",
-										"roles",
-										"ROLE_ADMIN"
+										"1",
+										"roles"
 									]
 								}
 							},
@@ -159,91 +167,115 @@
 			]
 		},
 		{
-			"name": "/api/login",
-			"request": {
-				"auth": {
-					"type": "noauth"
-				},
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"email\": \"admin@email.com\",\n    \"password\": \"password\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+			"name": "Auth",
+			"item": [
+				{
+					"name": "/api/auth/login",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"admin@email.com\",\n    \"password\": \"password\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/auth/login",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "{{host}}/api/auth/login",
-					"host": [
-						"{{host}}"
-					],
-					"path": [
-						"api",
-						"auth",
-						"login"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "/api/change-password",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"oldPassword\": \"password\",\n    \"password\": \"newpassword\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+				{
+					"name": "/api/auth/logout",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/api/auth/logout",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"logout"
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "{{host}}/api/auth/change-password",
-					"host": [
-						"{{host}}"
-					],
-					"path": [
-						"api",
-						"auth",
-						"change-password"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "/api/logout",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"oldPassword\": \"password\",\n    \"password\": \"newpassword\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+				{
+					"name": "/api/auth/email",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"alexandrw.cosor@gmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/auth/email",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"email"
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "{{host}}/api/auth/change-password",
-					"host": [
-						"{{host}}"
-					],
-					"path": [
-						"api",
-						"auth",
-						"change-password"
-					]
+				{
+					"name": "/api/auth/password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"oldPassword\": \"password\",\n    \"password\": \"newpassword\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}/api/auth/password",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"password"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		}
 	],
 	"auth": {

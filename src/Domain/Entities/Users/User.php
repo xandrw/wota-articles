@@ -101,6 +101,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, EntityI
         return $this->roles;
     }
 
+    public function setRoles(array $roles): void
+    {
+        if (empty($roles)) {
+            $this->roles = [self::ROLE_USER];
+            return;
+        }
+
+        $roles[] = self::ROLE_USER;
+        $roles = array_unique($roles);
+
+        $this->roles = [];
+
+        foreach ($roles as $role) {
+            $this->addRole($role);
+        }
+    }
+
     public function addRole(string $role): self
     {
         self::requires(in_array($role, self::ROLES, true), 'error.role.invalid');
@@ -138,22 +155,5 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, EntityI
     public function eraseCredentials(): self
     {
         return $this;
-    }
-
-    private function setRoles(array $roles): void
-    {
-        if (empty($roles)) {
-            $this->roles = [self::ROLE_USER];
-            return;
-        }
-
-        $roles[] = self::ROLE_USER;
-        $roles = array_unique($roles);
-
-        $this->roles = [];
-
-        foreach ($roles as $role) {
-            $this->addRole($role);
-        }
     }
 }

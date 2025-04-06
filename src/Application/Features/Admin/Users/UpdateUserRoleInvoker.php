@@ -9,14 +9,14 @@ use App\Application\Features\InvokerInterface;
 use App\Domain\Entities\Users\User;
 use Doctrine\ORM\EntityManagerInterface;
 
-readonly class RemoveUserRoleInvoker implements InvokerInterface
+readonly class UpdateUserRoleInvoker implements InvokerInterface
 {
     public function __construct(private EntityManagerInterface $entityManager) {}
 
     /**
      * @throws EntityNotFoundException
      */
-    public function __invoke(int $userId, string $role): User
+    public function __invoke(int $userId, array $roles): User
     {
         $user = $this->entityManager->getRepository(User::class)->find($userId);
 
@@ -24,7 +24,7 @@ readonly class RemoveUserRoleInvoker implements InvokerInterface
             throw new EntityNotFoundException(User::class);
         }
 
-        $user->removeRole($role);
+        $user->setRoles($roles);
         $this->entityManager->persist($user);
         $this->entityManager->flush();
         return $user;
