@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Presentation\Api\Endpoints\Auth;
+namespace App\Presentation\Api\Endpoints\Users;
 
 use App\Domain\Entities\Users\Events\UserLoggedOutEvent;
 use App\Domain\Entities\Users\User;

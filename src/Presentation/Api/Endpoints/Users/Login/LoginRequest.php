@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Presentation\Api\Endpoints\Auth\Login;
+namespace App\Presentation\Api\Endpoints\Users\Login;
 
 use SensitiveParameter;
 use Symfony\Component\Validator\Constraints as Assert;

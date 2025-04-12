@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Presentation\Api\Endpoints\Admin\Users\CreateUser;
 
-use App\Application\Features\Admin\Users\CreateUserInvoker;
+use App\Application\Features\Users\CreateUserInvoker;
 use App\Domain\Entities\Users\User;
 use App\Presentation\Api\Endpoints\Admin\Users\UserResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

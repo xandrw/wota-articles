@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Features\Auth;
+namespace App\Application\Features\Users;
 
-use App\Domain\Entities\Users\Events\PasswordChangedEvent;
+use App\Domain\Entities\Users\Events\UserCredentialsChanged;
 use App\Domain\Entities\Users\Events\UserLoggedInEvent;
 use App\Domain\Entities\Users\Events\UserLoggedOutEvent;
 use App\Domain\Entities\Users\User;
@@ -19,13 +19,13 @@ readonly class InvalidateTokensSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            UserLoggedInEvent::class => ['invalidate'],
-            UserLoggedOutEvent::class => ['invalidate'],
-            PasswordChangedEvent::class => ['invalidate'],
+            UserLoggedInEvent::class => ['deleteUserTokens'],
+            UserLoggedOutEvent::class => ['deleteUserTokens'],
+            UserCredentialsChanged::class => ['deleteUserTokens'],
         ];
     }
 
-    public function invalidate(DomainEventInterface $event): void
+    public function deleteUserTokens(DomainEventInterface $event): void
     {
         $entity = $event->getEntity();
 

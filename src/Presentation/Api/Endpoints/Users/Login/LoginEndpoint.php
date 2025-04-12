@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Presentation\Api\Endpoints\Auth\Login;
+namespace App\Presentation\Api\Endpoints\Users\Login;
 
-use App\Application\Features\Auth\LoginInvoker;
+use App\Application\Features\Users\LoginInvoker;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

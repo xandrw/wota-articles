@@ -14,6 +14,7 @@ AI Driven Article Summaries
 - [x] Domain Events published automatically
 - [x] Add command/s
 - [x] Add Presentation/APIs layer
+- [x] Postman collection of the API
 - [ ] Force json on REST API
 - [ ] Logger (Monolog?)
 - [ ] Twig templates

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Features\Admin\Users;
+namespace App\Application\Features\Users;
 
 use App\Application\Features\InvokerInterface;
 use App\Application\Results\PaginatedResult;

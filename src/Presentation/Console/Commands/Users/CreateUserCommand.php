@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Presentation\Console\Commands\Users;
 
-use App\Application\Features\Admin\Users\CreateUserInvoker;
+use App\Application\Features\Users\CreateUserInvoker;
 use App\Domain\Entities\Users\User;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;

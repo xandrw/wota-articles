@@ -8,7 +8,7 @@ use App\Domain\Entities\Users\User;
 use App\Domain\Events\DomainEventInterface;
 use App\Domain\Events\EventHasEntityTrait;
 
-class PasswordChangedEvent implements DomainEventInterface
+class UserCredentialsChanged implements DomainEventInterface
 {
     use EventHasEntityTrait;
 

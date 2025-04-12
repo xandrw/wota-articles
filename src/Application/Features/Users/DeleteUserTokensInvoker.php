@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Features\Auth;
+namespace App\Application\Features\Users;
 
 use App\Application\Features\InvokerInterface;
 use App\Domain\Entities\Users\AccessToken;

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Presentation\Api\Endpoints\Admin\Users;
 
-use App\Application\Features\Admin\Users\ListPaginatedUsersInvoker;
+use App\Application\Features\Users\ListPaginatedUsersInvoker;
 use App\Domain\Entities\Users\User;
 use App\Presentation\Api\Responses\PaginatedResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

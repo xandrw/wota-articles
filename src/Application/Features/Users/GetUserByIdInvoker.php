@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Features\Admin\Users;
+namespace App\Application\Features\Users;
 
 use App\Application\Exceptions\EntityNotFoundException;
 use App\Application\Features\InvokerInterface;
@@ -18,7 +18,6 @@ readonly class GetUserByIdInvoker implements InvokerInterface
      */
     public function __invoke(int $userId): User
     {
-
         $user = $this->entityManager->getRepository(User::class)->find($userId);
 
         if ($user === null) {

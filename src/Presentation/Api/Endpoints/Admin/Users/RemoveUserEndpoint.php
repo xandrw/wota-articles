@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Presentation\Api\Endpoints\Admin\Users;
 
 use App\Application\Exceptions\EntityNotFoundException;
-use App\Application\Features\Admin\Users\RemoveUserInvoker;
+use App\Application\Features\Users\RemoveUserInvoker;
 use App\Domain\Entities\Users\User;
 use App\Presentation\Api\Responses\NoContentResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

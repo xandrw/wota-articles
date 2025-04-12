@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Presentation\Api\Endpoints\Admin\Users;
 
 use App\Application\Exceptions\EntityNotFoundException;
-use App\Application\Features\Admin\Users\GetUserByIdInvoker;
+use App\Application\Features\Users\GetUserByIdInvoker;
 use App\Domain\Entities\Users\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;

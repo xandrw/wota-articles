@@ -2,32 +2,30 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Features\Auth;
+namespace App\Application\Features\Users;
 
 use App\Application\Exceptions\UnauthorizedException;
 use App\Application\Features\InvokerInterface;
-use App\Domain\Entities\Users\Events\PasswordChangedEvent;
+use App\Domain\Entities\Users\AccessToken;
+use App\Domain\Entities\Users\Events\UserLoggedInEvent;
 use App\Domain\Entities\Users\User;
+use App\Domain\Interfaces\RandomInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use SensitiveParameter;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-readonly class UpdatePasswordInvoker implements InvokerInterface
+readonly class LoginInvoker implements InvokerInterface
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
         private UserPasswordHasherInterface $passwordHasher,
         private EventDispatcherInterface $eventDispatcher,
-    )
-    {
-    }
+        private RandomInterface $randomizer,
+        private int $accessTokenExpiry,
+    ) {}
 
-    public function __invoke(
-        string $email,
-        #[SensitiveParameter] string $oldPassword,
-        #[SensitiveParameter] string $newPassword,
-    ): void
+    public function __invoke(string $email, #[SensitiveParameter] string $password): AccessToken
     {
         $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $email]);
 
@@ -35,18 +33,19 @@ readonly class UpdatePasswordInvoker implements InvokerInterface
             throw new UnauthorizedException();
         }
 
-        if ($user->validatePassword($oldPassword, $this->passwordHasher) === false) {
+        if ($user->validatePassword($password, $this->passwordHasher) === false) {
             throw new UnauthorizedException();
         }
 
-        $user->setPassword($newPassword, $this->passwordHasher);
-        $this->eventDispatcher->dispatch($this->getEvent($user), PasswordChangedEvent::class);
-        $this->entityManager->persist($user);
+        $accessToken = new AccessToken($user, $this->accessTokenExpiry, $this->randomizer);
+        $this->eventDispatcher->dispatch($this->getEvent($user), UserLoggedInEvent::class);
+        $this->entityManager->persist($accessToken);
         $this->entityManager->flush();
+        return $accessToken;
     }
 
-    protected function getEvent(User $user): PasswordChangedEvent
+    protected function getEvent(User $user): UserLoggedInEvent
     {
-        return new PasswordChangedEvent($user);
+        return new UserLoggedInEvent($user);
     }
 }
