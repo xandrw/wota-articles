@@ -9,8 +9,10 @@ use App\Application\Features\InvokerInterface;
 use App\Domain\Entities\Users\User;
 use Doctrine\ORM\EntityManagerInterface;
 use SensitiveParameter;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
+#[Autoconfigure(lazy: true)]
 readonly class CreateUserInvoker implements InvokerInterface
 {
     public function __construct(

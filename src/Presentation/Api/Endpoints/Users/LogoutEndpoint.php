@@ -21,6 +21,9 @@ class LogoutEndpoint extends AbstractController
 {
     public function __construct(private readonly EventDispatcherInterface $eventDispatcher) {}
 
+    /**
+     * @throws UnauthorizedHttpException
+     */
     public function __invoke(#[CurrentUser] ?User $user): Response
     {
         if ($user === null) {

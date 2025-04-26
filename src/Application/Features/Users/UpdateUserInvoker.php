@@ -5,15 +5,16 @@ declare(strict_types=1);
 namespace App\Application\Features\Users;
 
 use App\Application\Exceptions\DuplicateEntityException;
-use App\Application\Exceptions\UnauthorizedException;
 use App\Application\Features\InvokerInterface;
 use App\Domain\Entities\Users\Events\UserCredentialsChanged;
 use App\Domain\Entities\Users\User;
 use Doctrine\ORM\EntityManagerInterface;
 use SensitiveParameter;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
+#[Autoconfigure(lazy: true)]
 readonly class UpdateUserInvoker implements InvokerInterface
 {
     public function __construct(
@@ -22,18 +23,19 @@ readonly class UpdateUserInvoker implements InvokerInterface
         private EventDispatcherInterface $eventDispatcher,
     ) {}
 
+    /**
+     * @throws DuplicateEntityException
+     */
     public function __invoke(
         User $user,
-        ?string $email = null,
+        string $email,
         #[SensitiveParameter]
-        ?string $oldPassword = null,
-        #[SensitiveParameter]
-        ?string $newPassword = null,
+        string $password,
         ?array $roles = null,
     ): User
     {
         $this->trySetEmail($user, $email);
-        $this->trySetPassword($user, $oldPassword, $newPassword);
+        $user->setPassword($password, $this->passwordHasher);
 
         if ($roles !== null) {
             $user->setRoles($roles);
@@ -45,7 +47,10 @@ readonly class UpdateUserInvoker implements InvokerInterface
         return $user;
     }
 
-    protected function trySetEmail(User $user, ?string $email): void
+    /**
+     * @throws DuplicateEntityException
+     */
+    protected function trySetEmail(User $user, string $email): void
     {
         if (empty($email) || $email === $user->getEmail()) {
             return;
@@ -58,25 +63,6 @@ readonly class UpdateUserInvoker implements InvokerInterface
         }
 
         $user->setEmail($email);
-    }
-
-    protected function trySetPassword(
-        User $user,
-        #[SensitiveParameter]
-        ?string $oldPassword,
-        #[SensitiveParameter]
-        ?string $newPassword,
-    ): void
-    {
-        if (empty($oldPassword) || empty($newPassword) || $oldPassword === $newPassword) {
-            return;
-        }
-
-        if ($user->validatePassword($oldPassword, $this->passwordHasher) === false) {
-            throw new UnauthorizedException();
-        }
-
-        $user->setPassword($newPassword, $this->passwordHasher);
     }
 
     protected function getEvent(User $user): UserCredentialsChanged

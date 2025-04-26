@@ -12,9 +12,11 @@ use App\Domain\Entities\Users\User;
 use App\Domain\Interfaces\RandomInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use SensitiveParameter;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
+#[Autoconfigure(lazy: true)]
 readonly class LoginInvoker implements InvokerInterface
 {
     public function __construct(
@@ -25,6 +27,9 @@ readonly class LoginInvoker implements InvokerInterface
         private int $accessTokenExpiry,
     ) {}
 
+    /**
+     * @throws UnauthorizedException
+     */
     public function __invoke(string $email, #[SensitiveParameter] string $password): AccessToken
     {
         $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $email]);

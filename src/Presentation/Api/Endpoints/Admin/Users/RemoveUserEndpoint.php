@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Presentation\Api\Endpoints\Admin\Users;
 
 use App\Application\Exceptions\EntityNotFoundException;
-use App\Application\Features\Users\RemoveUserInvoker;
+use App\Application\Features\Users\UsersFacade;
 use App\Domain\Entities\Users\User;
 use App\Presentation\Api\Responses\NoContentResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,14 +19,14 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route(path: '/api/admin/users/{userId}', name: 'api.admin.users.remove', methods: [Request::METHOD_DELETE])]
 class RemoveUserEndpoint extends AbstractController
 {
-    public function __construct(private readonly RemoveUserInvoker $removeUserInvoker) {}
+    public function __construct(private readonly UsersFacade $usersFacade) {}
 
     /**
-     * @throws EntityNotFoundException Handled by exception listener
+     * @throws EntityNotFoundException
      */
     public function __invoke(int $userId): Response
     {
-        $this->removeUserInvoker->__invoke($userId);
+        $this->usersFacade->remove($userId);
         return new NoContentResponse();
     }
 }

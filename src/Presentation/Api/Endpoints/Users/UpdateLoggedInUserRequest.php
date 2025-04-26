@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace App\Presentation\Api\Endpoints\Users;
 
-use App\Domain\Entities\Users\User;
 use SensitiveParameter;
 use Symfony\Component\Validator\Constraints as Assert;
 
-readonly class UpdateUserRequest
+readonly class UpdateLoggedInUserRequest
 {
     public function __construct(
         #[Assert\When(
@@ -20,6 +19,7 @@ readonly class UpdateUserRequest
         )]
         public ?string $email = null,
 
+        #[SensitiveParameter]
         #[Assert\When(
             expression: 'this.email !== null && this.oldPassword !== null && this.newPassword !== null',
             constraints: [
@@ -32,9 +32,9 @@ readonly class UpdateUserRequest
                 ),
             ]
         )]
-        #[SensitiveParameter]
         public ?string $oldPassword = null,
 
+        #[SensitiveParameter]
         #[Assert\When(
             expression: 'this.email !== null && this.newPassword !== null && this.oldPassword !== null',
             constraints: [
@@ -47,19 +47,6 @@ readonly class UpdateUserRequest
                 ),
             ]
         )]
-        #[SensitiveParameter]
         public ?string $newPassword = null,
-
-        // Comment reason: Will use in another request
-        // #[Assert\When(
-        //     expression: 'this.roles !== null',
-        //     constraints: [
-        //         new Assert\Count(min: 1, minMessage: 'error.roles.minCount'),
-        //         new Assert\All([
-        //             new Assert\Choice(choices: User::ROLES, message: 'error.roles.invalid'),
-        //         ]),
-        //     ],
-        // )]
-        // public ?array $roles = null,
     ) {}
 }

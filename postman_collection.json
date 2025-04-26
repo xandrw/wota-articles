@@ -149,7 +149,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"admin@email.com\",\n    \"password\": \"password\"\n}",
+							"raw": "{\n    \"email\": \"example@email.com\",\n    \"password\": \"password\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -196,7 +196,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"john.doe@gmail.com\",\n    \"oldPassword\": \"password\",\n    \"newPassword\": \"new-password\"\n}",
+							"raw": "{\n    \"email\": \"examle@email.com\",\n    \"oldPassword\": \"password\",\n    \"newPassword\": \"new-password\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"

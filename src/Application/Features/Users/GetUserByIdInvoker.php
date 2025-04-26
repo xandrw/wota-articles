@@ -8,7 +8,9 @@ use App\Application\Exceptions\EntityNotFoundException;
 use App\Application\Features\InvokerInterface;
 use App\Domain\Entities\Users\User;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 
+#[Autoconfigure(lazy: true)]
 readonly class GetUserByIdInvoker implements InvokerInterface
 {
     public function __construct(private EntityManagerInterface $entityManager) {}

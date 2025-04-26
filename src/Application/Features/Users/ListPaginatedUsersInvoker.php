@@ -10,7 +10,9 @@ use App\Domain\Entities\Users\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Exception;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 
+#[Autoconfigure(lazy: true)]
 readonly class ListPaginatedUsersInvoker implements InvokerInterface
 {
     public function __construct(private EntityManagerInterface $entityManager) {}
