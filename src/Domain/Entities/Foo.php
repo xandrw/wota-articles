@@ -9,5 +9,5 @@ namespace App\Domain\Entities;
  */
 class Foo
 {
-    protected function __construct(protected string $name) {}
+    public function __construct(protected string $name) {}
 }
