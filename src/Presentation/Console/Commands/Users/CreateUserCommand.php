@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Presentation\Console\Commands\Users;
 
-use App\Application\Features\Users\CreateUserInvoker;
+use App\Application\Features\Users\UsersFacade;
 use App\Domain\Entities\Users\User;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -19,7 +19,7 @@ use Throwable;
 #[AsCommand(name: 'wota:users:create', description: 'Create a new user', aliases: ['wota:uc'])]
 class CreateUserCommand extends Command
 {
-    public function __construct(private readonly CreateUserInvoker $createUserInvoker)
+    public function __construct(private readonly UsersFacade $usersFacade)
     {
         parent::__construct();
     }
@@ -52,7 +52,7 @@ class CreateUserCommand extends Command
         $output->writeln("<comment>Roles:</comment> <fg=cyan>$rolesString</>");
 
         try {
-            $this->createUserInvoker->__invoke($email, $password, $roles);
+            $this->usersFacade->create($email, $password, $roles);
             $output->writeln(["<info>User created</info>", '']);
         } catch (Throwable $e) {
             $output->writeln(["<error>Error: {$e->getMessage()}</error>", '']);
