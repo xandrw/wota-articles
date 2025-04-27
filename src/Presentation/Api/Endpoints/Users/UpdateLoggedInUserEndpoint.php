@@ -40,6 +40,10 @@ class UpdateLoggedInUserEndpoint extends AbstractController
             throw new UnauthorizedHttpException('Bearer realm="[UpdateLoggedInUserEndpoint] User not authenticated"');
         }
 
+        if ($request->email === null && $request->newPassword === null) {
+            return new JsonResponse(UserResponse::fromEntity($user), Response::HTTP_OK);
+        }
+
         if ($user->validatePassword($request->oldPassword, $this->passwordHasher) === false) {
             throw new UnauthorizedHttpException('Bearer realm="[UpdateLoggedInUserEndpoint] Old password not valid"');
         }
@@ -50,6 +54,6 @@ class UpdateLoggedInUserEndpoint extends AbstractController
             $request->newPassword ?? $request->oldPassword,
         );
 
-        return new JsonResponse(UserResponse::fromEntity($user), Response::HTTP_CREATED);
+        return new JsonResponse(UserResponse::fromEntity($user), Response::HTTP_OK);
     }
 }

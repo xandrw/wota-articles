@@ -6,9 +6,13 @@ namespace App\Presentation\Api\Endpoints\Users;
 
 use SensitiveParameter;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Exception\MissingOptionsException;
 
 readonly class UpdateLoggedInUserRequest
 {
+    /**
+     * @throws MissingOptionsException
+     */
     public function __construct(
         #[Assert\When(
             expression: 'this.email !== null',
@@ -18,21 +22,6 @@ readonly class UpdateLoggedInUserRequest
             ],
         )]
         public ?string $email = null,
-
-        #[SensitiveParameter]
-        #[Assert\When(
-            expression: 'this.email !== null && this.oldPassword !== null && this.newPassword !== null',
-            constraints: [
-                new Assert\NotBlank(message: 'error.oldPassword.notBlank'),
-                new Assert\Length(
-                    min: 8,
-                    max: 255,
-                    minMessage: 'error.oldPassword.minLength',
-                    maxMessage: 'error.oldPassword.maxLength',
-                ),
-            ]
-        )]
-        public ?string $oldPassword = null,
 
         #[SensitiveParameter]
         #[Assert\When(
@@ -48,5 +37,15 @@ readonly class UpdateLoggedInUserRequest
             ]
         )]
         public ?string $newPassword = null,
+
+        #[SensitiveParameter]
+        #[Assert\NotBlank(message: 'error.oldPassword.notBlank', allowNull: false)]
+        #[Assert\Length(
+            min: 8,
+            max: 255,
+            minMessage: 'error.oldPassword.minLength',
+            maxMessage: 'error.oldPassword.maxLength',
+        )]
+        public string $oldPassword,
     ) {}
 }
