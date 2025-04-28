@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Domain\Entities\Users;
 
 use App\Domain\Entities\EntityInterface;
-use App\Domain\Interfaces\RandomInterface;
+use App\Domain\Interfaces\RandomizerInterface;
 use App\Domain\Validation\ValidationTrait;
 use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
@@ -25,7 +25,7 @@ class AccessToken implements EntityInterface
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     private DateTimeImmutable $expiresAt;
 
-    public function __construct(User $user, int $ttl, RandomInterface $random)
+    public function __construct(User $user, int $ttl, RandomizerInterface $random)
     {
         self::requires($user->getId() !== null, 'error.userId.required');
 

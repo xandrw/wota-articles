@@ -7,7 +7,7 @@ namespace App\Domain\Entities;
 /**
  * Ignore: just a test class that emphasizes a more "data separate from procedures" approach
  */
-abstract class PersonManager extends Person
+abstract class PersonManager
 {
     public static function create(string $firstName, string $lastName): Person
     {
@@ -21,9 +21,6 @@ abstract class PersonManager extends Person
 
     public static function update(Person $person, ?string $firstName = null, ?string $lastName = null): Person
     {
-        $person->firstName = $firstName ?? $person->firstName;
-        $person->lastName = $lastName ?? $person->lastName;
-
-        return $person;
+        return new Person($firstName ?? $person->firstName, $lastName ?? $person->lastName);
     }
 }

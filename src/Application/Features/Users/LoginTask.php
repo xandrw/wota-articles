@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace App\Application\Features\Users;
 
 use App\Application\Exceptions\UnauthorizedException;
-use App\Application\Features\InvokerInterface;
+use App\Application\Features\TaskInterface;
 use App\Domain\Entities\Users\AccessToken;
 use App\Domain\Entities\Users\Events\UserLoggedInEvent;
 use App\Domain\Entities\Users\User;
-use App\Domain\Interfaces\RandomInterface;
+use App\Domain\Interfaces\RandomizerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use SensitiveParameter;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
@@ -17,13 +17,13 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 #[Autoconfigure(lazy: true)]
-readonly class LoginInvoker implements InvokerInterface
+readonly class LoginTask implements TaskInterface
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
         private UserPasswordHasherInterface $passwordHasher,
         private EventDispatcherInterface $eventDispatcher,
-        private RandomInterface $randomizer,
+        private RandomizerInterface $randomizer,
         private int $accessTokenExpiry,
     ) {}
 

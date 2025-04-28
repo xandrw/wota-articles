@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Security;
 
-use App\Domain\Interfaces\RandomInterface;
+use App\Domain\Interfaces\RandomizerInterface;
 use Symfony\Component\Uid\Uuid;
 
 /** @SuppressUnused */
-class UuidRandomizer implements RandomInterface
+class UuidRandomizer implements RandomizerInterface
 {
     public function generate(): string
     {

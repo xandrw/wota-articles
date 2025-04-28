@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Application\Features\Users;
 
 use App\Application\Exceptions\DuplicateEntityException;
-use App\Application\Features\InvokerInterface;
+use App\Application\Features\TaskInterface;
 use App\Domain\Entities\Users\Events\UserCredentialsChanged;
 use App\Domain\Entities\Users\User;
 use Doctrine\ORM\EntityManagerInterface;
@@ -15,7 +15,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 #[Autoconfigure(lazy: true)]
-readonly class UpdateUserInvoker implements InvokerInterface
+readonly class UpdateUserTask implements TaskInterface
 {
     public function __construct(
         private EntityManagerInterface $entityManager,

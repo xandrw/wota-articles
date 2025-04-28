@@ -7,7 +7,7 @@ namespace App\Domain\Entities;
 /**
  * Ignore: just a test class that emphasizes a more "data separate from procedures" approach
  */
-class Person
+readonly class Person
 {
-    public function __construct(protected string $firstName, protected string $lastName) {}
+    public function __construct(public string $firstName, public string $lastName) {}
 }

@@ -14,6 +14,16 @@ readonly class UpdateLoggedInUserRequest
      * @throws MissingOptionsException
      */
     public function __construct(
+        #[SensitiveParameter]
+        #[Assert\NotBlank(message: 'error.oldPassword.notBlank', allowNull: false)]
+        #[Assert\Length(
+            min: 8,
+            max: 255,
+            minMessage: 'error.oldPassword.minLength',
+            maxMessage: 'error.oldPassword.maxLength',
+        )]
+        public string $oldPassword,
+
         #[Assert\When(
             expression: 'this.email !== null',
             constraints: [
@@ -37,15 +47,5 @@ readonly class UpdateLoggedInUserRequest
             ]
         )]
         public ?string $newPassword = null,
-
-        #[SensitiveParameter]
-        #[Assert\NotBlank(message: 'error.oldPassword.notBlank', allowNull: false)]
-        #[Assert\Length(
-            min: 8,
-            max: 255,
-            minMessage: 'error.oldPassword.minLength',
-            maxMessage: 'error.oldPassword.maxLength',
-        )]
-        public string $oldPassword,
     ) {}
 }

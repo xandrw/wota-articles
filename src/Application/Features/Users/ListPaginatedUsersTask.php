@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\Features\Users;
 
-use App\Application\Features\InvokerInterface;
+use App\Application\Features\TaskInterface;
 use App\Application\Results\PaginatedResult;
 use App\Domain\Entities\Users\User;
 use Doctrine\ORM\EntityManagerInterface;
@@ -13,7 +13,7 @@ use Exception;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 
 #[Autoconfigure(lazy: true)]
-readonly class ListPaginatedUsersInvoker implements InvokerInterface
+readonly class ListPaginatedUsersTask implements TaskInterface
 {
     public function __construct(private EntityManagerInterface $entityManager) {}
 

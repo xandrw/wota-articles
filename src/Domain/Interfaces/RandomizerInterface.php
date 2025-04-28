@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Interfaces;
 
-interface RandomInterface
+interface RandomizerInterface
 {
     public function generate(): string;
 }

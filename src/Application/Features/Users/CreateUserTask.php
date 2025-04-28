@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Application\Features\Users;
 
 use App\Application\Exceptions\DuplicateEntityException;
-use App\Application\Features\InvokerInterface;
+use App\Application\Features\TaskInterface;
 use App\Domain\Entities\Users\User;
 use Doctrine\ORM\EntityManagerInterface;
 use SensitiveParameter;
@@ -13,7 +13,7 @@ use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 #[Autoconfigure(lazy: true)]
-readonly class CreateUserInvoker implements InvokerInterface
+readonly class CreateUserTask implements TaskInterface
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
