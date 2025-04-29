@@ -37,7 +37,5 @@ readonly class CreateUserRequest
         ])]
         #[Assert\Count(min: 1, minMessage: 'error.roles.minCount')]
         public array $roles = [],
-    )
-    {
-    }
+    ) {}
 }

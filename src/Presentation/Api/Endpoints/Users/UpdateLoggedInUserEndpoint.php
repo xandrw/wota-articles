@@ -23,6 +23,8 @@ use Symfony\Component\Security\Http\Attribute\CurrentUser;
 class UpdateLoggedInUserEndpoint extends AbstractController
 {
     public function __construct(
+        #[CurrentUser]
+        private readonly ?User $authenticatedUser,
         private readonly UsersFacade $usersFacade,
         private readonly UserPasswordHasherInterface $passwordHasher,
     ) {}
@@ -31,29 +33,26 @@ class UpdateLoggedInUserEndpoint extends AbstractController
      * @throws DuplicateEntityException
      * @throws UnauthorizedHttpException
      */
-    public function __invoke(
-        #[MapRequestPayload] UpdateLoggedInUserRequest $request,
-        #[CurrentUser] ?User $user,
-    ): Response
+    public function __invoke(#[MapRequestPayload] UpdateLoggedInUserRequest $request): Response
     {
-        if ($user === null) {
+        if ($this->authenticatedUser === null) {
             throw new UnauthorizedHttpException('Bearer realm="[UpdateLoggedInUserEndpoint] User not authenticated"');
         }
 
         if ($request->email === null && $request->newPassword === null) {
-            return new JsonResponse(UserResponse::fromEntity($user), Response::HTTP_OK);
+            return new JsonResponse(UserResponse::fromEntity($this->authenticatedUser), Response::HTTP_OK);
         }
 
-        if ($user->validatePassword($request->oldPassword, $this->passwordHasher) === false) {
+        if ($this->authenticatedUser->validatePassword($request->oldPassword, $this->passwordHasher) === false) {
             throw new UnauthorizedHttpException('Bearer realm="[UpdateLoggedInUserEndpoint] Old password not valid"');
         }
 
         $this->usersFacade->update(
-            $user,
-            $request->email ?? $user->getEmail(),
+            $this->authenticatedUser,
+            $request->email ?? $this->authenticatedUser->getEmail(),
             $request->newPassword ?? $request->oldPassword,
         );
 
-        return new JsonResponse(UserResponse::fromEntity($user), Response::HTTP_OK);
+        return new JsonResponse(UserResponse::fromEntity($this->authenticatedUser), Response::HTTP_OK);
     }
 }

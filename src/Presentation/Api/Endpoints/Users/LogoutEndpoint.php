@@ -19,18 +19,22 @@ use Symfony\Component\Security\Http\Attribute\CurrentUser;
 #[Route(path: '/api/auth/logout', name: 'api.auth.logout', methods: [Request::METHOD_POST])]
 class LogoutEndpoint extends AbstractController
 {
-    public function __construct(private readonly EventDispatcherInterface $eventDispatcher) {}
+    public function __construct(
+        #[CurrentUser]
+        private readonly ?User $authenticatedUser,
+        private readonly EventDispatcherInterface $eventDispatcher,
+    ) {}
 
     /**
      * @throws UnauthorizedHttpException
      */
-    public function __invoke(#[CurrentUser] ?User $user): Response
+    public function __invoke(): Response
     {
-        if ($user === null) {
+        if ($this->authenticatedUser === null) {
             throw new UnauthorizedHttpException('Bearer realm="Access to logout endpoint"');
         }
 
-        $this->eventDispatcher->dispatch($this->getEvent($user));
+        $this->eventDispatcher->dispatch($this->getEvent($this->authenticatedUser));
         return new NoContentResponse();
     }
 

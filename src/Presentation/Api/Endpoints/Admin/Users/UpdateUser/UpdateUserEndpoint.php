@@ -16,7 +16,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Throwable;
 
 /** @SuppressUnused */
 #[IsGranted(User::ROLE_ADMIN, message: 'Forbidden')]
@@ -29,7 +28,7 @@ class UpdateUserEndpoint extends AbstractController
      * @throws EntityNotFoundException
      * @throws DuplicateEntityException
      */
-    public function __invoke(#[MapRequestPayload] UpdateUserRequest $request, int $userId): Response
+    public function __invoke(int $userId, #[MapRequestPayload] UpdateUserRequest $request): Response
     {
         $user = $this->usersFacade->getById($userId);
         $this->usersFacade->update($user, $request->email, $request->password, $request->roles);

@@ -7,9 +7,17 @@ namespace App\Presentation\Api\Endpoints\Admin\Users\UpdateUser;
 use App\Domain\Entities\Users\User;
 use SensitiveParameter;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Exception\ConstraintDefinitionException;
+use Symfony\Component\Validator\Exception\InvalidOptionsException;
+use Symfony\Component\Validator\Exception\MissingOptionsException;
 
 readonly class UpdateUserRequest
 {
+    /**
+     * @throws InvalidOptionsException
+     * @throws ConstraintDefinitionException
+     * @throws MissingOptionsException
+     */
     public function __construct(
         #[Assert\When(
             expression: 'this.email !== null',

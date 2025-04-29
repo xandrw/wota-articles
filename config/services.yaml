@@ -24,4 +24,8 @@ services:
         tags: [ 'controller.service_arguments' ]
         public: true
     
-    App\Domain\Interfaces\RandomInterface: '@App\Infrastructure\Security\UuidRandomizer'
+    App\Domain\Interfaces\RandomizerInterface: '@App\Infrastructure\Security\UuidRandomizer'
+
+    App\Presentation\Api\ValueResolvers\RequestHasRouteParametersValueResolver:
+        tags:
+            - { name: controller.argument_value_resolver, priority: 10 }

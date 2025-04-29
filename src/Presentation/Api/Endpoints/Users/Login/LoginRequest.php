@@ -25,7 +25,5 @@ readonly class LoginRequest
         )]
         #[SensitiveParameter]
         public string $password,
-    )
-    {
-    }
+    ) {}
 }
